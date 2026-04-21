@@ -6,7 +6,7 @@ Multitask-UACM es un gestor de operaciones genéricas multi-tarea con interfaz g
 
 **Version actual** 1.0.0 
 
-## 👨‍💻 Eqipo: Los Fornais 
+## 👨‍💻 Equipo: Los Fornais 
 **integrantes:**
 * Aguilar Castellanos Luis Armando
 * Cruz Roldan Erik
