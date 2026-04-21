@@ -1,4 +1,4 @@
-package mx.edu.uacm.is.slt.ds.multitask_uacm;
+package mx.edu.uacm.is.slt.ds.multitask_uacm.controlador;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
