@@ -3,31 +3,30 @@ package mx.edu.uacm.is.slt.ds.multitask_uacm.modelo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Tarea {
-
-    // Atributos
+public class Tarea implements Ejecutable {
     private String nombre;
     private String descripcion;
     private List<String> precondiciones;
     private List<String> postcondiciones;
     private String comportamiento;
+    private String estado;
 
     public Tarea() {
-        // Valores por defecto
         this.nombre = "Nueva tarea";
         this.descripcion = "";
         this.precondiciones = new ArrayList<>();
         this.postcondiciones = new ArrayList<>();
         this.comportamiento = "";
+        this.estado = "No ejecutada";
     }
 
     public Tarea(String nombre, String descripcion) {
-        // Datos iniciales
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precondiciones = new ArrayList<>();
         this.postcondiciones = new ArrayList<>();
         this.comportamiento = "";
+        this.estado = "No ejecutada";
     }
 
     public String getNombre() {
@@ -62,32 +61,51 @@ public class Tarea {
         this.comportamiento = comportamiento;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     public void agregarPrecondicion(String precondicion) {
-        // Solo agrega si trae texto
         if (precondicion != null && !precondicion.isBlank()) {
             precondiciones.add(precondicion);
         }
     }
 
     public void agregarPostcondicion(String postcondicion) {
-        // Solo agrega si trae texto
         if (postcondicion != null && !postcondicion.isBlank()) {
             postcondiciones.add(postcondicion);
         }
     }
 
     public void eliminarPrecondicion(int indice) {
-        // Borra si el índice existe
         if (indice >= 0 && indice < precondiciones.size()) {
             precondiciones.remove(indice);
         }
     }
 
     public void eliminarPostcondicion(int indice) {
-        // Borra si el índice existe
         if (indice >= 0 && indice < postcondiciones.size()) {
             postcondiciones.remove(indice);
         }
+    }
+
+    @Override
+    public void pausar() {
+        estado = "Pausada";
+    }
+
+    @Override
+    public void reanudar() {
+        estado = "En ejecución";
+    }
+
+    @Override
+    public void detener() {
+        estado = "Detenida";
     }
 
     @Override
