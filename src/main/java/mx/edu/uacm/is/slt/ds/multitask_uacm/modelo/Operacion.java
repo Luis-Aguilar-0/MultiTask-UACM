@@ -1,19 +1,22 @@
 package mx.edu.uacm.is.slt.ds.multitask_uacm.modelo;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Operacion {
     private String nombre;
     private String descripcion;
-    private List<Tarea> tareas;
+    private ObservableList<Tarea> tareas;
     private String estado;
 
     public Operacion() {
         // Valores iniciales
         this.nombre = "Nueva operación";
         this.descripcion = "";
-        this.tareas = new ArrayList<>();
+        this.tareas = FXCollections.observableArrayList();
         this.estado = "No ejecutada";
     }
 
@@ -21,7 +24,7 @@ public class Operacion {
         // Datos iniciales
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.tareas = new ArrayList<>();
+        this.tareas = FXCollections.observableArrayList();
         this.estado = "No ejecutada";
     }
 

@@ -1,14 +1,18 @@
 package mx.edu.uacm.is.slt.ds.multitask_uacm.modelo;
 
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class GestorOperaciones {
-    private List<Operacion> operaciones;
+    private ObservableList<Operacion> operaciones; // se usa una ObservableList para hacer uso del patron Observador
 
     public GestorOperaciones() {
         // Lista vacía al iniciar
-        this.operaciones = new ArrayList<Operacion>();
+        this.operaciones = FXCollections.observableArrayList();
     }
 
     public List<Operacion> getOperaciones() {
@@ -61,5 +65,10 @@ public class GestorOperaciones {
         operacion.setEstado("No ejecutada");
 
         operaciones.add(operacion);
+    }
+
+    @Override
+    public String toString() {
+        return "Operaciones = " + operaciones ;
     }
 }
