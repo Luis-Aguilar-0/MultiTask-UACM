@@ -17,13 +17,12 @@ import java.io.IOException;
 
 /**
  * En esta clase se implemtan todas las interacciones que raliza el usuario con botones, campos de texto etc..
- *
  * */
 
 public class PantallaPrincipalController {
 
     private GestorOperaciones gestor = new GestorOperaciones(); //instancia para el manejo de la lógica
-    private static Operacion operacionSeleccionada;
+    private Operacion operacionSeleccionada;
 
    @FXML
     private Label texto;
@@ -42,6 +41,15 @@ public class PantallaPrincipalController {
        texto.setText("En proceso de desarrollo........!");
 
    }
+
+    /**
+     * Accion encargada de mostrar la informacion del sistema
+     */
+    @FXML
+    public void onButtonMostrarInfoSistemaClick(){
+        texto.setText("Función aún no disponible..... :(");
+
+    }
 
     /***
      * Accion encargada de mostrar las operaciones registradas
@@ -86,7 +94,7 @@ public class PantallaPrincipalController {
    }
 
     /**
-     * Metoo para abrir el editor de Operacioens sin cerrar Stage principal
+     * Metodo para abrir el editor de Operacioens sin cerrar Stage principal
      *
      */
    private void abrirVentanaEditorOperaciones(){

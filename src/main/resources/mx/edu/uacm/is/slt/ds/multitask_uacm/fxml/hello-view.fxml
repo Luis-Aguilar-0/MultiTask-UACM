@@ -13,7 +13,7 @@
     <Button onAction="#onHelloButtonClick" text="Hola bienvenidos al proyecto MultiTask..." />
    <Button fx:id="buttonMostrarOperciones" mnemonicParsing="false" onAction="#onButtonMostrarOperacioes" text="Mostrar Operaciones" />
     <Button fx:id="botonVisorEditorOperacion" onAction="#onButtonVistaEditorOperacion" text="Editar Operaciones" />
-   <Button fx:id="buttonMostrarInfoSistema" mnemonicParsing="false" text="Info" />
+   <Button fx:id="buttonMostrarInfoSistema" mnemonicParsing="false" text="Info" onAction="#onButtonMostrarInfoSistemaClick" />
 
     <Label fx:id="texto" />
 </VBox>

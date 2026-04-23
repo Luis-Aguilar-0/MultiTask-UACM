@@ -42,6 +42,8 @@ public class PantallaPrincipal{
             Parent vistaRaiz = fxmlLoader.load();
             Scene escena = new Scene(vistaRaiz, 900, 600);
             PANTALLA_PRINCIPAL.setScene(escena);
+            PANTALLA_PRINCIPAL.setTitle("Multitask UACM");
+
         }catch (IOException e){
             System.err.println("No fue posible mostrar la ventana");
             System.err.println(e.getMessage());
