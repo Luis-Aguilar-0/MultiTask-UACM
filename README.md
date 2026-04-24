@@ -4,7 +4,7 @@ Multitask-UACM es un gestor de operaciones genéricas multi-tarea con interfaz g
 
 **Identificador del sistema** "mx.edu.uacm.is.slt.ds.multitask_uacm"
 
-**Version actual** 1.0.0 
+**Version actual** 2.0.0 
 
 ## 👨‍💻 Equipo: Los Fornais 
 **integrantes:**
@@ -23,7 +23,7 @@ Multitask-UACM es un gestor de operaciones genéricas multi-tarea con interfaz g
 
 **Identificador del sistema** "mx.edu.uacm.is.slt.ds.multitask_uacm"
 
-**Version actual** 1.0.0 
+**Version actual** 2.0.0 
 
 ## 👨‍💻 Eqipo: Los Fornais 
 **integrantes:**
