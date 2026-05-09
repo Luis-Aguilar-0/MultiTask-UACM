@@ -9,7 +9,9 @@ import mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.AcercaDeController;
 
 
 /***
- * Clase encargada de mostrar la infromacion del sistema
+ * Clase encargada de mostrar la infromacion del sistema como:
+ * version actual del sistema
+ * información de los desarrolladores
  */
 public class AcercaDe {
 
@@ -38,24 +40,16 @@ public class AcercaDe {
             }
 
             Parent vistaRaiz = fxmlLoader.load();
-            
-
             Scene escena = new Scene(vistaRaiz,900,600);
-            //Stage ventanaAcerdaDe = new Stage();
-
             PANTALLA_ACERCA_DE.setScene(escena);
             PANTALLA_ACERCA_DE.setTitle("Acerca de.");
 
-            /*Logica para permitir abrir denuevo la ventana*/
+            /*Logica para permitir abrir de nuevo la ventana*/
             PANTALLA_ACERCA_DE.showingProperty().addListener((obs,odlValue,newValue) -> {
                 if(!newValue){
                     singleton = null;
                 }
             });
-
-            //PANTALLA_ACERCA_DE.show();
-            //mostrar();
-
 
         } catch (Exception e) {
             System.err.println("Surgio un problema al abrir la ventana");
