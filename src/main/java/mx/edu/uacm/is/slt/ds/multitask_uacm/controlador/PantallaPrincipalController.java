@@ -10,6 +10,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.GestorOperaciones;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.Operacion;
+import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.AcercaDe;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.VisorEditorOperacion;
 
 import java.io.IOException;
@@ -47,7 +48,11 @@ public class PantallaPrincipalController {
      */
     @FXML
     public void onButtonMostrarInfoSistemaClick(){
-        texto.setText("Función aún no disponible..... :(");
+
+        AcercaDe acerdaDe = AcercaDe.obtenerInstancia(new Stage());
+        acerdaDe.mostrar();
+        System.out.println("El boton fue procionado");
+        //texto.setText("Función aún no disponible..... :(");
 
     }
 
