@@ -10,6 +10,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import javafx.fxml.FXML;
 
 /**
  * Clase encargada unicamente para la creacion de la interfaz grafica
@@ -58,7 +59,6 @@ public class PantallaPrincipal{
         }
         return singleton;
     }
-
 
 
 }

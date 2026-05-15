@@ -1,12 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="600.0" prefWidth="900.0" spacing="20.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.AcercaDeController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
-</VBox>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: F2EDE6;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.AcercaDeController">
+   <children>
+      <Button fx:id="btnCerrar" layoutX="763.0" layoutY="529.0" mnemonicParsing="false" onAction="#cerrarVentana" prefHeight="37.0" prefWidth="97.0" style="-fx-background-color: #C3A495;" text="Cerrar">
+         <font>
+            <Font name="Arial Black" size="14.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+      <Separator layoutX="34.0" layoutY="95.0" prefHeight="5.0" prefWidth="839.0" style="-fx-background-color: #D9CCC5;">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Separator>
+      <Label  layoutX="35.0" layoutY="137.0" prefHeight="17.0" prefWidth="64.0" text="Versión:">
+         <font>
+            <Font name="Arial Black" size="13.0" />
+         </font>
+      </Label>
+      <TextField fx:id="lblVersion" layoutX="236.0" layoutY="125.0" prefHeight="25.0" prefWidth="122.0">
+         <effect>
+            <DropShadow />
+         </effect></TextField>
+      <Label  layoutX="36.0" layoutY="176.0" text="Feha de lanzamiento:">
+         <font>
+            <Font name="Arial Black" size="13.0" />
+         </font>
+      </Label>
+      <TextField fx:id="lblFecha" layoutX="236.0" layoutY="174.0" prefHeight="25.0" prefWidth="122.0">
+         <effect>
+            <DropShadow />
+         </effect></TextField>
+      <Separator layoutX="452.0" layoutY="102.0" orientation="VERTICAL" prefHeight="229.0" prefWidth="5.0" style="-fx-background-color: #D9CCC5;">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Separator>
+      <Label layoutX="479.0" layoutY="115.0" text="Equipo de desarrollo:">
+         <font>
+            <Font name="Arial Black" size="14.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="txtEquipo" layoutX="479.0" layoutY="157.0" prefHeight="162.0" prefWidth="377.0">
+         <effect>
+            <DropShadow />
+         </effect></TextArea>
+      <Label layoutX="36.0" layoutY="405.0" text="Contacto">
+         <font>
+            <Font name="Arial Black" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="35.0" layoutY="442.0" text="Repositorio:">
+         <font>
+            <Font name="Arial Black" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="36.0" layoutY="485.0" text="Documentación: ">
+         <font>
+            <Font name="Arial Black" size="14.0" />
+         </font>
+      </Label>
+      <Hyperlink layoutX="168.0" layoutY="483.0" text="https://drive.google.com/drive/folders/1K8eEnK_VXKvfh2V-BfR4tFTCojvOrHHi">
+         <font>
+            <Font name="Arial Black" size="13.0" />
+         </font>
+      </Hyperlink>
+      <Hyperlink layoutX="166.0" layoutY="440.0" text="https://github.com/Luis-Aguilar-0/MultiTask-UACM">
+         <font>
+            <Font name="Arial Black" size="13.0" />
+         </font>
+      </Hyperlink>
+      <Pane prefHeight="92.0" prefWidth="900.0" style="-fx-background-color: #D9CCC5;">
+         <children>
+            <Label layoutX="326.0" layoutY="28.0" prefHeight="37.0" prefWidth="248.0" text="Multi Task - UACM">
+               <font>
+                  <Font name="Arial Black" size="24.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="113.0" fitWidth="183.0" layoutX="14.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../../../../../../../../Downloads/logo_UACM_sin_fondo.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+   </children>
+</Pane>
