@@ -31,10 +31,10 @@ public class AcercaDeController implements Initializable{
         
         lblFecha.setText("12/05/2026");
         
-        txtEquipo.setText("* Erik Cruz Roldan\n Líder | 22-003-0842" +
-                "* Luis Armando Aguilar Castellanos\n Líder |  22-003-1206"
-                + "* Wendolyn Medina Chávez\n Miembro | 21-003-0392"
-                + "*Ángel Juárez Andrade\n Miembro |  22-003-0141");
+        txtEquipo.setText("• Erik Cruz Roldan - Líder | 22-003-0842 \n"
+                +"• Luis Armando Aguilar Castellanos- Líder |  22-003-1206 \n"
+                + "• Wendolyn Medina Chávez - Miembro | 21-003-0392\n"
+                + "•Ángel Juárez Andrade - Miembro |  22-003-0141");
         
     }
     
