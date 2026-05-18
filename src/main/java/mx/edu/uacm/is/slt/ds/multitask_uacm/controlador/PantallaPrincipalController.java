@@ -14,16 +14,17 @@ import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.AcercaDe;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.VisorEditorOperacion;
 
 import java.io.IOException;
+import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.PantallaPrincipal;
 
 
 /**
- * En esta clase se implemtan todas las interacciones que raliza el usuario con botones, campos de texto etc..
+ * En esta clase se implemtan todas las interacciones que realiza el usuario con botones, campos de texto etc..
  * */
 
 public class PantallaPrincipalController {
 
     private GestorOperaciones gestor = new GestorOperaciones(); //instancia para el manejo de la lógica
-    private Operacion operacionSeleccionada;
+    private Operacion operacionSeleccionada; //hola
 
    @FXML
     private Label texto;
@@ -112,6 +113,15 @@ public class PantallaPrincipalController {
        }
 
    }
+   @FXML
+private void abrirAcercaDe(){
+   Stage stage = new Stage();
+   
+   AcercaDe acerca = AcercaDe.obtenerInstancia(stage);
+   
+   acerca.mostrar();
+}
+
 
 
 }
