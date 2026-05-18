@@ -24,7 +24,7 @@ import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.PantallaPrincipal;
 public class PantallaPrincipalController {
 
     private GestorOperaciones gestor = new GestorOperaciones(); //instancia para el manejo de la lógica
-    private Operacion operacionSeleccionada;
+    private Operacion operacionSeleccionada; //hola
 
    @FXML
     private Label texto;
