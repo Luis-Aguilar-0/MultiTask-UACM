@@ -94,33 +94,16 @@ public class PantallaPrincipalController {
      */
    @FXML
     public void onButtonVistaEditorOperacion(){
-       System.out.println("El boton fue procionado");
-       abrirVentanaEditorOperaciones();
-
-   }
-
-    /**
-     * Metodo para abrir el editor de Operacioens sin cerrar Stage principal
-     *
-     */
-   private void abrirVentanaEditorOperaciones(){
-       Stage stage = new Stage();
-       VisorEditorOperacion visorEditorOperacion = VisorEditorOperacion.obtenerInstancia(stage);
-
-       //pasamos la operacion seleccionada
-       if(operacionSeleccionada != null){
-           visorEditorOperacion.setOperacion(operacionSeleccionada);
-       }
+       VisorEditorOperacion visorEditorOperacion = VisorEditorOperacion.obtenerInstancia(new Stage());
        visorEditorOperacion.mostrar();
    }
+
    @FXML
-private void abrirAcercaDe(){
-   Stage stage = new Stage();
-   
-   AcercaDe acerca = AcercaDe.obtenerInstancia(stage);
-   
-   acerca.mostrar();
-}
+    private void abrirAcercaDe(){
+        Stage stage = new Stage();
+        AcercaDe acerca = AcercaDe.obtenerInstancia(stage);
+        acerca.mostrar();
+    }
 
 
 
