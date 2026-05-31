@@ -1,0 +1,43 @@
+.root-pane {
+    -fx-background-color: #D9CCC5;
+}
+
+.root-background {
+    -fx-background-color: #F2EDE6;
+
+}
+
+.label {
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+}
+
+.text-field, .text-area {
+    -fx-background-color: white;
+    -fx-border-color: #D9CCC5;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 5;
+}
+
+.text-area {
+    -fx-font-family: "Arial";
+    -fx-font-size: 13px;
+}
+
+.button {
+    -fx-background-color: #C3A495;
+    -fx-font-family: "Arial Black";
+    -fx-font-size: 13px;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #B39282;
+}
+
+.button:pressed {
+    -fx-background-color: #A38170;
+}
