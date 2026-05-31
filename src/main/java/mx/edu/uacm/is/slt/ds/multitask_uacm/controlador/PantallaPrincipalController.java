@@ -111,7 +111,7 @@ public class PantallaPrincipalController {
        if(operacionSeleccionada != null){
            visorEditorOperacion.setOperacion(operacionSeleccionada);
        }
-
+       visorEditorOperacion.mostrar();
    }
    @FXML
 private void abrirAcercaDe(){
