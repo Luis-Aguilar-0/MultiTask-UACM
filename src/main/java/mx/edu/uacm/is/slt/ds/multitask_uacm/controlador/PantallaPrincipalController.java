@@ -1,19 +1,13 @@
 package mx.edu.uacm.is.slt.ds.multitask_uacm.controlador;
 
-import javafx.beans.property.Property;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.GestorOperaciones;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.Operacion;
@@ -21,145 +15,96 @@ import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.AcercaDe;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.NuevaOperacion;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.VisorEditorOperacion;
 
-import java.io.IOException;
-import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.PantallaPrincipal;
-
-
-/**
- * En esta clase se implemtan todas las interacciones que realiza el usuario con botones, campos de texto etc..
- * */
-
 public class PantallaPrincipalController {
 
-
-
-    private GestorOperaciones gestor = GestorOperaciones.obtenerInstancia(); //instancia para el manejo de la lógica
+    private GestorOperaciones gestor = GestorOperaciones.obtenerInstancia(); 
     private Operacion operacionSeleccionada;
 
-    @FXML
-    public TableColumn tlb_tareas;
+    @FXML public TableView<Operacion> tlbV_tablaViewPrincipal;
+    @FXML private TableColumn<Operacion, String> tlb_operaciones;
+    @FXML public TableColumn<Operacion, String> tlb_tareas; // Muestra descripción/conteo
+    @FXML public TableColumn<Operacion, String> tlb_estado;
+    @FXML public TableColumn<Operacion, String> tlb_accion;
+
+    @FXML private Label texto;
+    @FXML private Button botonVisorEditorOperacion;
+    @FXML private Button buttonMostrarOperciones;
+    @FXML private Button buttonMostrarInfoSistema;
+    @FXML private Button btn_nuevaOperacion;
 
     @FXML
-    public TableColumn tlb_estado;
+    public void initialize() {
+        // Vinculación reactiva de propiedades del Modelo a las columnas de la Vista
+        tlb_operaciones.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        tlb_tareas.setCellValueFactory(new PropertyValueFactory<>("descripcion")); // ERS: Ver descripción completa
+        tlb_estado.setCellValueFactory(new PropertyValueFactory<>("estado"));
+        tlb_accion.setCellValueFactory(new PropertyValueFactory<>("estado")); // Reutiliza estado o propiedad de control
+
+        // Forzamos la carga inicial de datos de prueba al arrancar el MVP
+        if (gestor.getOperaciones().isEmpty()) {
+            gestor.cargarOperacionesDePrueba();
+        }
+
+        // SOLUCIÓN AL DESFASE: Captura la fila seleccionada físicamente por el usuario
+        tlbV_tablaViewPrincipal.getSelectionModel().selectedItemProperty().addListener((obs, anterior, seleccion) -> {
+            if (seleccion != null) {
+                operacionSeleccionada = seleccion;
+                System.out.println("Consola: Operación seleccionada correctamente -> " + operacionSeleccionada.getNombre());
+            }
+        });
+
+        ObservableList<Operacion> operaciones = (ObservableList<Operacion>) gestor.getOperaciones();
+        operaciones.addListener((ListChangeListener<Operacion>) c -> tlbV_tablaViewPrincipal.refresh());
+
+        tlbV_tablaViewPrincipal.setItems(operaciones);
+    }
 
     @FXML
-    public TableColumn tlb_accion;
+    public void onButtonVistaEditorOperacion() {
+        // Verificación de selección de fila actual
+        Operacion seleccionada = tlbV_tablaViewPrincipal.getSelectionModel().getSelectedItem();
+        
+        if (seleccionada == null) {
+            System.out.println("Consola: Error, debes seleccionar una operación de la tabla.");
+            return;
+        }
+
+        // Inyectamos la operación exacta elegida al puente estático
+        VisorEditorOperacionController.guardarReferenciaOperacion(seleccionada);
+        
+        // Desplegamos el editor/visor correspondiente
+        VisorEditorOperacion visorEditorOperacion = VisorEditorOperacion.obtenerInstancia(new Stage());
+        visorEditorOperacion.mostrar();
+        
+        // Al cerrar la ventana flotante, forzamos el refresco para visualizar los cambios guardados
+        tlbV_tablaViewPrincipal.refresh();
+    }
 
     @FXML
-    public TableView tlbV_tablaViewPrincipal;
+    public void onButtonNuevaOperacion() {
+        NuevaOperacion nuevaOperacion = NuevaOperacion.obtenerInstancia(new Stage());
+        nuevaOperacion.mostrar();
+    }
 
     @FXML
-    private TableColumn<Operacion, String> tlb_operaciones;
-
-   @FXML
-    private Label texto;
-
-   @FXML
-   private Button botonVisorEditorOperacion;
-
-   @FXML
-   private Button buttonMostrarOperciones;
-
-   @FXML
-   private Button buttonMostrarInfoSistema;
-
-   @FXML
-   private Button btn_nuevaOperacion;
-
-   @FXML
-   protected void onHelloButtonClick(){
-       texto.setText("En proceso de desarrollo........!");
-
-   }
-
-   @FXML
-   public void initialize(){
-       tlb_operaciones.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-       //actualizamos el contenido de la tabla cuando se agregan nuevos elementos
-       ObservableList<Operacion> operaciones = (ObservableList<Operacion>) gestor.getOperaciones();
-       operaciones.addListener(new ListChangeListener<Operacion>() {
-
-           @Override
-           public void onChanged(Change<? extends Operacion> c) {
-               tlbV_tablaViewPrincipal.requestFocus();
-           }
-       });
-
-       tlbV_tablaViewPrincipal.setItems(operaciones);
-   }
-
-    /**
-     * Accion encargada de mostrar la informacion del sistema
-     */
-    @FXML
-    public void onButtonMostrarInfoSistemaClick(){
-
+    public void onButtonMostrarInfoSistemaClick() {
         AcercaDe acerdaDe = AcercaDe.obtenerInstancia(new Stage());
         acerdaDe.mostrar();
-        System.out.println("El boton fue procionado");
-        //texto.setText("Función aún no disponible..... :(");
-
     }
 
-    /**
-     * Boton encargado de mostrar la pantalla "Nueva Opearcion"
-     * */
-     @FXML
-     public void onButtonNuevaOperacion(){
-         NuevaOperacion nuevaOperacion = NuevaOperacion.obtenerInstancia(new Stage());
-
-         nuevaOperacion.mostrar();
-
-     }
-
-    /***
-     * Accion encargada de mostrar las operaciones registradas
-     *
-     */
-   @FXML
-    public void onButtonMostrarOperacioes(){
-
-        mostrarOperciones();
-
-   }
-
-    /**
-     * Metodo encargado de mostrar las operaciones creadas
-     * de momento solo muestra la informacion crada con el metodo cargaOperacionesPrueba() mediate terminal
-     */
-    private void mostrarOperciones(){
-        gestor.cargarOperacionesDePrueba();
-        System.out.println(gestor.toString());
-        seleccionarOperacion(); //Una ves mostradas las Operaciones se permite seleccionar una sola Opearcion
+    @FXML
+    public void onButtonMostrarOperacioes() {
+        tlbV_tablaViewPrincipal.refresh();
     }
 
-
-    private void seleccionarOperacion(){
-
-        System.out.println("Operacion seleccionda " );
-        operacionSeleccionada = gestor.obtenerOperacion(0);
-
+    @FXML
+    protected void onHelloButtonClick() {
+        texto.setText("Sistema MultiTask-UACM listo.");
     }
 
-
-
-
-    /***
-     * Metodo encargado de cargra la interfaz grafica de VisorEditorOperacionVista
-     */
-   @FXML
-    public void onButtonVistaEditorOperacion(){
-       VisorEditorOperacion visorEditorOperacion = VisorEditorOperacion.obtenerInstancia(new Stage());
-       visorEditorOperacion.mostrar();
-   }
-
-   @FXML
-    private void abrirAcercaDe(){
-        Stage stage = new Stage();
-        AcercaDe acerca = AcercaDe.obtenerInstancia(stage);
+    @FXML
+    private void abrirAcercaDe() {
+        AcercaDe acerca = AcercaDe.obtenerInstancia(new Stage());
         acerca.mostrar();
     }
-
-
-
 }

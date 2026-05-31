@@ -68,7 +68,7 @@ public class VisorEditorOperacion {
      */
     public void setOperacion(Operacion op){
         if(this.controlador != null){
-            this.controlador.setOperacionActual(op);
+            //this.controlador.setOperacionActual(op);
         }
     }
 

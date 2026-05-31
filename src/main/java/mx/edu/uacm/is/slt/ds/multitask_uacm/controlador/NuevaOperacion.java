@@ -33,36 +33,37 @@ public class NuevaOperacion {
 
 
     /**
-     * Accion de crear una nueva Operacion, y agregarla a la obsebable list cuando se preciona el botón de guardar
-     **/
-    @FXML
-    public void ocClickNuevaOperacion(){
-        Operacion operacion = new Operacion();
-        if(!txtField_nombreOp.getText().isEmpty() && !txtArea_descripcion.getText().isEmpty()) {
-
-            lbl_msgError.setVisible(false);
-            operacion.setNombre(txtField_nombreOp.getText());
-            operacion.setDescripcion(txtArea_descripcion.getText());
-            operacion.setEstado(Estado.NO_EJECUTADA);
-            gestor.agregarOperacion(operacion);
-            btn_guardarOp.setOnMouseClicked(event->{
-                onClosedVentana();
-            });
-        }else{
-            lbl_msgError.setText("Error, campos de texto vacios...");
-            lbl_msgError.setVisible(true);
-        }
-
-    }
-
-
-    /**
      * Accion encargada de cerrar la ventana.
      * */
     @FXML
     public void onClosedVentana(){
         Stage ecena = (Stage) btn_cancelar.getScene().getWindow();
         ecena.close();
+    }
+
+    @FXML
+    public void ocClickNuevaOperacion(){
+        if(!txtField_nombreOp.getText().isEmpty() && !txtArea_descripcion.getText().isEmpty()) {
+
+            lbl_msgError.setVisible(false);
+            
+            Operacion operacion = new Operacion();
+            operacion.setNombre(txtField_nombreOp.getText().trim());
+            operacion.setDescripcion(txtArea_descripcion.getText().trim());
+            operacion.setEstado(Estado.NO_EJECUTADA);
+            
+            // Al agregarse al gestor, al ser una ObservableList, la pantalla principal se actualizará sola al instante
+            gestor.agregarOperacion(operacion);
+            
+            System.out.println("Operación guardada reactivamente: " + operacion.getNombre());
+            
+            // Cerramos la ventana de inmediato de forma natural
+            onClosedVentana();
+            
+        } else {
+            lbl_msgError.setText("Error, campos de texto vacíos...");
+            lbl_msgError.setVisible(true);
+        }
     }
 
 }
