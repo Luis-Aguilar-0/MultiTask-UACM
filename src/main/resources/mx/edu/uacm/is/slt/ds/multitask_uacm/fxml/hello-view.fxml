@@ -12,7 +12,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: F2EDE6;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.PantallaPrincipalController">
    <children>
-      <TableView fx:id="tlbV_tablaViewPrincipal" layoutX="41.0" layoutY="187.0" prefHeight="341.0" prefWidth="845.0" style="-fx-background-color: #D9CCC5;">
+      <TableView fx:id="tlbV_tablaViewPrincipal" layoutX="27.0" layoutY="185.0" prefHeight="341.0" prefWidth="845.0" style="-fx-background-color: #D9CCC5;">
         <columns>
           <TableColumn fx:id="tlb_operaciones" prefWidth="192.80007362365723" text="Operaciones" />
           <TableColumn fx:id="tlb_tareas" prefWidth="249.60003662109375" text="Tareas" />

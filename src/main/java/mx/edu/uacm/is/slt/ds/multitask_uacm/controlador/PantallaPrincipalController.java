@@ -8,21 +8,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.GestorOperaciones;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.Operacion;
-import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.AcercaDe;
+import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.*;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.NuevaOperacion;
-import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.VisorEditorOperacion;
 
 import java.io.IOException;
-import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.PantallaPrincipal;
 
 
 /**
@@ -37,16 +32,16 @@ public class PantallaPrincipalController {
     private Operacion operacionSeleccionada;
 
     @FXML
-    public TableColumn tlb_tareas;
+    public TableColumn<Operacion, String> tlb_tareas;
 
     @FXML
-    public TableColumn tlb_estado;
+    public TableColumn<Operacion, String> tlb_estado;
 
     @FXML
-    public TableColumn tlb_accion;
+    public TableColumn<Operacion,String> tlb_accion;
 
     @FXML
-    public TableView tlbV_tablaViewPrincipal;
+    public TableView<Operacion> tlbV_tablaViewPrincipal;
 
     @FXML
     private TableColumn<Operacion, String> tlb_operaciones;
@@ -74,16 +69,47 @@ public class PantallaPrincipalController {
 
    @FXML
    public void initialize(){
+
        tlb_operaciones.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+
+       // se configura la columna accion
+       tlb_accion.setCellFactory(param -> new TableCell<Operacion, String>(){
+
+           //creacion del boton ver
+           private final Button btnAbrirVer = new Button("Abrir");
+
+           {
+
+               btnAbrirVer.setOnAction(event -> {
+                   operacionSeleccionada = getTableView().getItems().get(getIndex());
+                   VisorEditorTareas visorEditorTareas = VisorEditorTareas.obtenerInstancia(new Stage());
+                   visorEditorTareas.mostrar();
+               });
+
+           }
+
+           @Override
+           protected void updateItem(String item, boolean empty){
+               super.updateItem(item, empty);
+
+               if(empty){
+                   setGraphic(null);
+               }else{
+                   setGraphic(btnAbrirVer);
+               }
+           }
+       });
+
+
        //actualizamos el contenido de la tabla cuando se agregan nuevos elementos
        ObservableList<Operacion> operaciones = (ObservableList<Operacion>) gestor.getOperaciones();
        operaciones.addListener(new ListChangeListener<Operacion>() {
-
            @Override
            public void onChanged(Change<? extends Operacion> c) {
                tlbV_tablaViewPrincipal.requestFocus();
            }
        });
+
 
        tlbV_tablaViewPrincipal.setItems(operaciones);
    }
