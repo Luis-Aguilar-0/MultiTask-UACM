@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.GestorOperaciones;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.Operacion;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.AcercaDe;
+import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.NuevaOperacion;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.VisorEditorOperacion;
 
 import java.io.IOException;
@@ -39,6 +40,9 @@ public class PantallaPrincipalController {
    private Button buttonMostrarInfoSistema;
 
    @FXML
+   private Button btn_nuevaOperacion;
+
+   @FXML
    protected void onHelloButtonClick(){
        texto.setText("En proceso de desarrollo........!");
 
@@ -56,6 +60,15 @@ public class PantallaPrincipalController {
         //texto.setText("Función aún no disponible..... :(");
 
     }
+
+    /**
+     * Boton encargado de mostrar la pantalla "Nueva Opearcion"
+     * */
+     @FXML
+     public void onButtonNuevaOperacion(){
+         NuevaOperacion nuevaOperacion = NuevaOperacion.obtenerInstancia(new Stage());
+         nuevaOperacion.mostrar();
+     }
 
     /***
      * Accion encargada de mostrar las operaciones registradas
