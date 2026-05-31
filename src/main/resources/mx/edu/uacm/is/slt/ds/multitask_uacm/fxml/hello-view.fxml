@@ -31,7 +31,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button layoutX="375.0" layoutY="110.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="150.0" style="-fx-background-color: #C3A495;" text="Editar">
+      <Button layoutX="375.0" layoutY="110.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="150.0" style="-fx-background-color: #C3A495;" text="Editar" onAction="#onButtonVistaEditorOperacion">
          <font>
             <Font name="Arial Black" size="13.0" />
          </font>

@@ -35,23 +35,22 @@ public class VisorEditorOperacion {
             Parent root = loader.load();
             this.controlador = loader.getController();
 
-            Scene esena = new Scene(root);
-            Stage ventanaEditorOperacion = new Stage();
-            ventanaEditorOperacion.setScene(esena);
-            //ventanaEditorOperacion.initModality(Modality.NONE); //para no bloquear la ventana principal
-            ventanaEditorOperacion.setResizable(false); //no permitimos que la vetana se maximice
+            Scene escena = new Scene(root,900,600);
+            VISTA_EDITOR_OPERACION.setScene(escena);
+            VISTA_EDITOR_OPERACION.setTitle("Editor operacion");
+
 
             /**
              * Si se cierra la ventana, por el uso del patron singleton no se permite
              * crear una nueva ventana, en le caso de que se necesite abrir denuevo la ventana
              * detectamos si se cerro
              */
-            ventanaEditorOperacion.showingProperty().addListener((obs,oldValue,newValue)->{
+            VISTA_EDITOR_OPERACION.showingProperty().addListener((obs,oldValue,newValue)->{
                 if(!newValue){ // si se cerro la ventana
                     singleton = null;
                 }
             } );
-            ventanaEditorOperacion.show();
+            //ventanaEditorOperacion.show();
 
 
 
