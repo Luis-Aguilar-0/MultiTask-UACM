@@ -11,58 +11,63 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" style="-fx-background-color: F2EDE6;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: F2EDE6;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane prefHeight="82.0" prefWidth="640.0" style="-fx-background-color: #D9CCC5;">
+      <Pane prefHeight="82.0" prefWidth="900.0" style="-fx-background-color: #D9CCC5;">
          <children>
             <ImageView fitHeight="66.0" fitWidth="146.0" layoutX="8.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../../../../../../../../../../../Downloads/logo_UACM_sin_fondo.png" />
                </image>
             </ImageView>
-            <Label layoutX="242.0" layoutY="29.0" text="Editor de operaciones">
+            <Label layoutX="341.0" layoutY="28.0" text="Editor de operaciones">
                <font>
                   <Font name="Arial Black" size="18.0" />
                </font>
             </Label>
+            <ImageView fitHeight="76.0" fitWidth="181.0" layoutX="8.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../../../../../../../../../Downloads/logo_UACM_sin_fondo.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
-      <Label layoutX="32.0" layoutY="106.0" prefHeight="38.0" prefWidth="160.0" text="Nombre de la tarea:">
+      <Label layoutX="34.0" layoutY="135.0" prefHeight="38.0" prefWidth="160.0" text="Nombre de la tarea:">
          <font>
             <Font name="Arial Black" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="34.0" layoutY="154.0" prefHeight="22.0" prefWidth="108.0" text="Descripción:">
+      <Label layoutX="34.0" layoutY="191.0" prefHeight="22.0" prefWidth="108.0" text="Descripción:">
          <font>
             <Font name="Arial Black" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="34.0" layoutY="194.0" text="Tipo de tarea:">
+      <Label layoutX="34.0" layoutY="238.0" text="Tipo de tarea:">
          <font>
             <Font name="Arial Black" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="35.0" layoutY="238.0" text="Dependencias:">
+      <Label layoutX="34.0" layoutY="289.0" text="Dependencias:">
          <font>
             <Font name="Arial Black" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="34.0" layoutY="286.0" text="Precondiciones:">
+      <Label layoutX="36.0" layoutY="344.0" text="Precondiciones:">
          <font>
             <Font name="Arial Black" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="35.0" layoutY="333.0" text="Postcondiciones:">
+      <Label layoutX="35.0" layoutY="398.0" text="Postcondiciones:">
          <font>
             <Font name="Arial Black" size="14.0" />
          </font>
       </Label>
-      <TextField layoutX="218.0" layoutY="112.0" prefHeight="26.0" prefWidth="270.0" />
-      <TextField layoutX="218.0" layoutY="152.0" prefHeight="26.0" prefWidth="270.0" />
-      <TextField layoutX="218.0" layoutY="237.0" prefHeight="26.0" prefWidth="270.0" />
-      <TextField layoutX="218.0" layoutY="284.0" prefHeight="26.0" prefWidth="270.0" />
-      <TextField layoutX="218.0" layoutY="331.0" prefHeight="26.0" prefWidth="270.0" />
-      <Button layoutX="503.0" layoutY="414.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="98.0" style="-fx-background-color: #C3A495;" text="Cancelar">
+      <TextField layoutX="218.0" layoutY="141.0" prefHeight="26.0" prefWidth="270.0" />
+      <TextField layoutX="218.0" layoutY="189.0" prefHeight="26.0" prefWidth="270.0" />
+      <TextField layoutX="218.0" layoutY="287.0" prefHeight="26.0" prefWidth="270.0" />
+      <TextField layoutX="218.0" layoutY="342.0" prefHeight="26.0" prefWidth="270.0" />
+      <TextField layoutX="218.0" layoutY="396.0" prefHeight="26.0" prefWidth="270.0" />
+      <Button layoutX="701.0" layoutY="497.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="98.0" style="-fx-background-color: #C3A495;" text="Cancelar">
          <effect>
             <DropShadow />
          </effect>
@@ -70,7 +75,7 @@
             <Font name="Arial Black" size="13.0" />
          </font>
       </Button>
-      <Button layoutX="39.0" layoutY="414.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="98.0" style="-fx-background-color: #C3A495;" text="Guardar">
+      <Button layoutX="157.0" layoutY="497.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="98.0" style="-fx-background-color: #C3A495;" text="Guardar">
          <effect>
             <DropShadow />
          </effect>
@@ -78,6 +83,6 @@
             <Font name="Arial Black" size="13.0" />
          </font>
       </Button>
-      <ComboBox layoutX="218.0" layoutY="193.0" prefHeight="26.0" prefWidth="270.0" />
+      <ComboBox layoutX="218.0" layoutY="236.0" prefHeight="26.0" prefWidth="270.0" />
    </children>
 </AnchorPane>
