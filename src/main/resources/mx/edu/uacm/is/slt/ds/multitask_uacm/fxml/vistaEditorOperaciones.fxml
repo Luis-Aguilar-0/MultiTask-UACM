@@ -9,6 +9,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.effect.DropShadow?>
 
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: F2EDE6;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane prefHeight="82.0" prefWidth="900.0" style="-fx-background-color: #D9CCC5;">
@@ -83,4 +86,4 @@
       </Button>
       <ComboBox layoutX="218.0" layoutY="236.0" prefHeight="26.0" prefWidth="270.0" />
    </children>
-</Pane>
+</AnchorPane>
