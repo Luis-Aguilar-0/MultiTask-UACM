@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -14,69 +15,105 @@ import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.Operacion;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.AcercaDe;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.NuevaOperacion;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.VisorEditorOperacion;
+import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.VisorEditorTareas;
 
+/**
+ * En esta clase se implementan todas las interacciones que realiza el usuario con
+ * botones, campos de texto etc..
+ */
 public class PantallaPrincipalController {
 
-    private GestorOperaciones gestor = GestorOperaciones.obtenerInstancia(); 
+    private GestorOperaciones gestor = GestorOperaciones.obtenerInstancia();
     private Operacion operacionSeleccionada;
 
-    @FXML public TableView<Operacion> tlbV_tablaViewPrincipal;
-    @FXML private TableColumn<Operacion, String> tlb_operaciones;
-    @FXML public TableColumn<Operacion, String> tlb_tareas; // Muestra descripción/conteo
-    @FXML public TableColumn<Operacion, String> tlb_estado;
-    @FXML public TableColumn<Operacion, String> tlb_accion;
+    @FXML
+    public TableColumn<Operacion, String> tlb_tareas;
 
-    @FXML private Label texto;
-    @FXML private Button botonVisorEditorOperacion;
-    @FXML private Button buttonMostrarOperciones;
-    @FXML private Button buttonMostrarInfoSistema;
-    @FXML private Button btn_nuevaOperacion;
+    @FXML
+    public TableColumn<Operacion, String> tlb_estado;
+
+    @FXML
+    public TableColumn<Operacion, String> tlb_accion;
+
+    @FXML
+    public TableView<Operacion> tlbV_tablaViewPrincipal;
+
+    @FXML
+    private TableColumn<Operacion, String> tlb_operaciones;
+
+    @FXML
+    private Label texto;
+
+    @FXML
+    private Button botonVisorEditorOperacion;
+
+    @FXML
+    private Button buttonMostrarOperciones;
+
+    @FXML
+    private Button buttonMostrarInfoSistema;
+
+    @FXML
+    private Button btn_nuevaOperacion;
 
     @FXML
     public void initialize() {
+        // ===== CONFIGURACIÓN DE COLUMNAS =====
         // Vinculación reactiva de propiedades del Modelo a las columnas de la Vista
         tlb_operaciones.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        tlb_tareas.setCellValueFactory(new PropertyValueFactory<>("descripcion")); // ERS: Ver descripción completa
+        tlb_tareas.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
         tlb_estado.setCellValueFactory(new PropertyValueFactory<>("estado"));
-        tlb_accion.setCellValueFactory(new PropertyValueFactory<>("estado")); // Reutiliza estado o propiedad de control
-
-        // Forzamos la carga inicial de datos de prueba al arrancar el MVP
-        if (gestor.getOperaciones().isEmpty()) {
-            gestor.cargarOperacionesDePrueba();
-        }
-
-        // SOLUCIÓN AL DESFASE: Captura la fila seleccionada físicamente por el usuario
+        
+        // ===== CONFIGURACIÓN ESPECIAL DE LA COLUMNA ACCIÓN CON BOTÓN =====
+        tlb_accion.setCellFactory(param -> new TableCell<Operacion, String>() {
+            private final Button btnAbrirVer = new Button("Abrir");
+            
+            {
+                btnAbrirVer.setOnAction(event -> {
+                    operacionSeleccionada = getTableView().getItems().get(getIndex());
+                    VisorEditorTareas visorEditorTareas = VisorEditorTareas.obtenerInstancia(new Stage());
+                    visorEditorTareas.mostrar();
+                    System.out.println("Consola: Abriendo operación -> " + operacionSeleccionada.getNombre());
+                });
+            }
+            
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(btnAbrirVer);
+                }
+            }
+        });
+        
+        // ===== LISTENER DE SELECCIÓN DE FILA =====
         tlbV_tablaViewPrincipal.getSelectionModel().selectedItemProperty().addListener((obs, anterior, seleccion) -> {
             if (seleccion != null) {
                 operacionSeleccionada = seleccion;
                 System.out.println("Consola: Operación seleccionada correctamente -> " + operacionSeleccionada.getNombre());
             }
         });
-
+        
+        // ===== CARGA DE DATOS Y ACTUALIZACIÓN =====
         ObservableList<Operacion> operaciones = (ObservableList<Operacion>) gestor.getOperaciones();
         operaciones.addListener((ListChangeListener<Operacion>) c -> tlbV_tablaViewPrincipal.refresh());
-
         tlbV_tablaViewPrincipal.setItems(operaciones);
     }
 
     @FXML
     public void onButtonVistaEditorOperacion() {
-        // Verificación de selección de fila actual
         Operacion seleccionada = tlbV_tablaViewPrincipal.getSelectionModel().getSelectedItem();
-        
+
         if (seleccionada == null) {
             System.out.println("Consola: Error, debes seleccionar una operación de la tabla.");
             return;
         }
 
-        // Inyectamos la operación exacta elegida al puente estático
         VisorEditorOperacionController.guardarReferenciaOperacion(seleccionada);
-        
-        // Desplegamos el editor/visor correspondiente
         VisorEditorOperacion visorEditorOperacion = VisorEditorOperacion.obtenerInstancia(new Stage());
         visorEditorOperacion.mostrar();
-        
-        // Al cerrar la ventana flotante, forzamos el refresco para visualizar los cambios guardados
         tlbV_tablaViewPrincipal.refresh();
     }
 
