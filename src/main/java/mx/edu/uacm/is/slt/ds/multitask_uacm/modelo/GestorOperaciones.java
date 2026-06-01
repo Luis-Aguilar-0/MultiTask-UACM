@@ -8,11 +8,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GestorOperaciones {
+
+    private static GestorOperaciones singleton = null;
     private ObservableList<Operacion> operaciones; // se usa una ObservableList para hacer uso del patron Observador
 
-    public GestorOperaciones() {
+    private GestorOperaciones() {
         // Lista vacía al iniciar
         this.operaciones = FXCollections.observableArrayList();
+
+    }
+
+    public static GestorOperaciones obtenerInstancia() {
+        if(singleton == null){
+            singleton = new GestorOperaciones();
+        }
+        return singleton;
     }
 
     public List<Operacion> getOperaciones() {
@@ -21,9 +31,17 @@ public class GestorOperaciones {
 
     public void agregarOperacion(Operacion operacion) {
         // Solo agrega si existe
-        if (operacion != null) {
-            operaciones.add(operacion);
+        /*
+        Por defecto solo se pueden crear cuatro operaciones
+        * */
+        if(operaciones.size() <= 4){
+            if (operacion != null) {
+                operaciones.add(operacion);
+            }
+        }else{
+            System.out.println("No es posible agregar mas operaciones");
         }
+
     }
 
     public void eliminarOperacion(int indice) {
@@ -62,7 +80,7 @@ public class GestorOperaciones {
         operacion.agregarTarea(tarea1);
         operacion.agregarTarea(tarea2);
         operacion.agregarTarea(tarea3);
-        operacion.setEstado("No ejecutada");
+        operacion.setEstado(Estado.NO_EJECUTADA);
 
         operaciones.add(operacion);
     }

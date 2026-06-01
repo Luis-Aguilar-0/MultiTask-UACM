@@ -10,20 +10,20 @@ public class Operacion implements Ejecutable {
     private String nombre;
     private String descripcion;
     private ObservableList<Tarea> tareas;
-    private String estado;
+    private Estado estado;
 
     public Operacion() {
         this.nombre = "Nueva operación";
         this.descripcion = "";
         this.tareas = FXCollections.observableArrayList();
-        this.estado = "No ejecutada";
+        this.estado = Estado.NO_EJECUTADA;
     }
 
     public Operacion(String nombre, String descripcion) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.tareas = FXCollections.observableArrayList();
-        this.estado = "No ejecutada";
+        this.estado = Estado.NO_EJECUTADA;
     }
 
     public String getNombre() {
@@ -46,11 +46,11 @@ public class Operacion implements Ejecutable {
         return tareas;
     }
 
-    public String getEstado() {
+    public Estado getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(Estado estado) {
         this.estado = estado;
     }
 
@@ -84,7 +84,7 @@ public class Operacion implements Ejecutable {
 
     @Override
     public void pausar() {
-        estado = "Pausada";
+        estado = Estado.PAUSADO;
         for (Tarea tarea : tareas) {
             tarea.pausar();
         }
@@ -92,7 +92,7 @@ public class Operacion implements Ejecutable {
 
     @Override
     public void reanudar() {
-        estado = "En ejecución";
+        estado = Estado.EN_EJECUCION;
         for (Tarea tarea : tareas) {
             tarea.reanudar();
         }
@@ -100,7 +100,7 @@ public class Operacion implements Ejecutable {
 
     @Override
     public void detener() {
-        estado = "Detenida";
+        estado = Estado.DETENIDA;
         for (Tarea tarea : tareas) {
             tarea.detener();
         }

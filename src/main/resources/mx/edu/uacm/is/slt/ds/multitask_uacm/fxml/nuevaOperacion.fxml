@@ -17,8 +17,9 @@
          <font>
             <Font size="17.0" />
          </font></Label>
+      <Label fx:id="lbl_msgError" layoutX="423.0" layoutY="543.0" text="Label" visible="false" />
       <TextField fx:id="txtField_nombreOp" layoutX="437.0" layoutY="182.0" prefHeight="26.0" prefWidth="355.0" styleClass="text-field" stylesheets="@../css/estilos.css" />
-      <Button fx:id="btn_guardarOp" layoutX="88.0" layoutY="504.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="225.0" text="Guardar Operación" />
+      <Button fx:id="btn_guardarOp" layoutX="88.0" layoutY="504.0" mnemonicParsing="false" onAction="#ocClickNuevaOperacion" prefHeight="26.0" prefWidth="225.0" text="Guardar Operación" />
       <Button fx:id="btn_cancelar" layoutX="555.0" layoutY="504.0" mnemonicParsing="false" onAction="#onClosedVentana" prefHeight="26.0" prefWidth="225.0" text="Cancelar" />
       <Pane prefHeight="88.0" prefWidth="900.0" styleClass="root-pane" stylesheets="@../css/estilos.css">
          <children>
