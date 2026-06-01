@@ -3,13 +3,26 @@ package mx.edu.uacm.is.slt.ds.multitask_uacm.modelo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Tarea implements Ejecutable {
+import javafx.application.Platform;
+
+public class Tarea implements Ejecutable, Runnable {
+
     private String nombre;
     private String descripcion;
     private List<String> precondiciones;
     private List<String> postcondiciones;
     private String comportamiento;
     private String estado;
+    private String tipoTarea;
+    private List<String> dependencias;
+    private boolean pausable;
+
+    // --- NUEVAS PROPIEDADES PARA ROBUSTECER EL CONTROL GRÁFICO Y HILOS ---
+    private double progreso;
+    private Thread hilo;
+    private volatile boolean corriendo;
+    private volatile boolean pausada;
+    private final Object bloqueo = new Object();
 
     public Tarea() {
         this.nombre = "Nueva tarea";
@@ -18,6 +31,12 @@ public class Tarea implements Ejecutable {
         this.postcondiciones = new ArrayList<>();
         this.comportamiento = "";
         this.estado = "No ejecutada";
+        this.tipoTarea = "Inicial (puede iniciar sola)";
+        this.dependencias = new ArrayList<>();
+        this.pausable = true;
+        this.corriendo = false;
+        this.pausada = false;
+        this.progreso = 0.0;
     }
 
     public Tarea(String nombre, String descripcion) {
@@ -27,6 +46,17 @@ public class Tarea implements Ejecutable {
         this.postcondiciones = new ArrayList<>();
         this.comportamiento = "";
         this.estado = "No ejecutada";
+        this.tipoTarea = "Inicial (puede iniciar sola)";
+        this.dependencias = new ArrayList<>();
+        this.pausable = true;
+        this.corriendo = false;
+        this.pausada = false;
+        this.progreso = 0.0;
+    }
+
+    // ─── Getters y Setters Adicionales de Progreso ───────────────────────────
+    public double getProgreso() {
+        return progreso;
     }
 
     public String getNombre() {
@@ -65,8 +95,35 @@ public class Tarea implements Ejecutable {
         return estado;
     }
 
+    // Seteo seguro de estados notificando a la interfaz
     public void setEstado(String estado) {
-        this.estado = estado;
+        Platform.runLater(() -> this.estado = estado);
+    }
+
+    public String getTipoTarea() {
+        return tipoTarea;
+    }
+
+    public void setTipoTarea(String tipoTarea) {
+        this.tipoTarea = tipoTarea;
+    }
+
+    public List<String> getDependencias() {
+        return dependencias;
+    }
+
+    public void agregarDependencia(String dep) {
+        if (dep != null && !dep.isBlank()) {
+            dependencias.add(dep);
+        }
+    }
+
+    public boolean isPausable() {
+        return pausable;
+    }
+
+    public void setPausable(boolean pausable) {
+        this.pausable = pausable;
     }
 
     public void agregarPrecondicion(String precondicion) {
@@ -93,19 +150,88 @@ public class Tarea implements Ejecutable {
         }
     }
 
+    // ─── Ejecución Asíncrona con Hilos e Interfaz ─────────────────────────────
+    public void ejecutar() {
+        if (hilo != null && hilo.isAlive()) {
+            return;
+        }
+        corriendo = true;
+        pausada = false;
+        setEstado("En ejecución");
+        hilo = new Thread(this, "Hilo-" + nombre);
+        hilo.setDaemon(true);
+        hilo.start();
+    }
+
+    @Override
+    public void run() {
+        try {
+            // Simulación reactiva paso a paso de 0% a 100% de progreso
+            while (progreso < 100.0 && corriendo) {
+                synchronized (bloqueo) {
+                    while (pausada && corriendo) {
+                        setEstado("Pausada");
+                        bloqueo.wait(); // Suspensión real del hilo sin consumo de CPU
+                    }
+                }
+
+                if (!corriendo) {
+                    break;
+                }
+
+                // Simula procesamiento del flujo
+                Thread.sleep(200);
+
+                // Modificación del progreso en zona segura de JavaFX
+                Platform.runLater(() -> progreso += 10.0);
+                System.out.println("[" + nombre + "] Progreso: " + progreso + "%");
+            }
+
+            if (corriendo && progreso >= 100.0) {
+                setEstado("Finalizada");
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            corriendo = false;
+        }
+    }
+
     @Override
     public void pausar() {
-        estado = "Pausada";
+        if (!pausable || !corriendo) {
+            return;
+        }
+        pausada = true;
+        System.out.println("[" + nombre + "] Pausa solicitada.");
     }
 
     @Override
     public void reanudar() {
-        estado = "En ejecución";
+        if (!pausada) {
+            return;
+        }
+        synchronized (bloqueo) {
+            pausada = false;
+            setEstado("En ejecución");
+            bloqueo.notifyAll(); // Despierta el hilo secundario
+        }
+        System.out.println("[" + nombre + "] Reanudada.");
     }
 
     @Override
     public void detener() {
-        estado = "Detenida";
+        corriendo = false;
+        pausada = false;
+        synchronized (bloqueo) {
+            bloqueo.notifyAll();
+        }
+        if (hilo != null) {
+            hilo.interrupt(); // Interrumpe inmediatamente si el hilo estaba en sleep()
+        }
+        Platform.runLater(() -> progreso = 0.0); // Reseteo completo conforme a la ERS
+        setEstado("Detenida");
+        hilo = null;
     }
 
     @Override
