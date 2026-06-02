@@ -1,94 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: F2EDE6;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.NuevaTareaController">
+<Pane prefHeight="600.0" prefWidth="850.0"
+      style="-fx-background-color: #F2EDE6;"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.VisorDeTareasController">
+
    <children>
-      <Label layoutX="33.0" layoutY="161.0" text="Nombre de la tarea: ">
-         <font>
-            <Font name="Arial Black" size="18.0" />
-         </font>
-      </Label>
-      <Label layoutX="35.0" layoutY="227.0" text="Descripción:">
-         <font>
-            <Font name="Arial Black" size="18.0" />
-         </font>
-      </Label>
-      <Label layoutX="32.0" layoutY="287.0" text="Tipo de tarea:">
-         <font>
-            <Font name="Arial Black" size="18.0" />
-         </font>
-      </Label>
-      <Label layoutX="28.0" layoutY="346.0" text="Dependencias:">
-         <font>
-            <Font name="Arial Black" size="18.0" />
-         </font>
-      </Label>
-      <TextField fx:id="txtNombreTarea" layoutX="268.0" layoutY="162.0" prefHeight="25.0" prefWidth="234.0" />
-      <TextField fx:id="txtDescripcion" layoutX="268.0" layoutY="228.0" prefHeight="25.0" prefWidth="234.0" />
-      <TextField fx:id="txtDependencias" layoutX="268.0" layoutY="347.0" prefHeight="25.0" prefWidth="234.0" />
-      <Button fx:id="btnAgregarPrecondiciones" layoutX="33.0" layoutY="523.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="201.0" style="-fx-background-color: #C3A495;" text="+ Agregar precondiciones" onAction="#abrirPrecondiciones" >
-         <font>
-            <Font name="Arial Black" size="13.0" />
-         </font>
+      
+      <!-- HEADER -->
+      <Pane prefHeight="80.0" prefWidth="850.0"
+            style="-fx-background-color: #D9CCC5; -fx-border-width: 0 0 2 0; -fx-border-color: #C3A495;">
          <effect>
-            <DropShadow />
+            <DropShadow color="#0000001a" height="10.0" radius="4.5" width="10.0" />
          </effect>
-      </Button>
-      <Button fx:id="btnAgregarPostcondiciones" layoutX="268.0" layoutY="523.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="218.0" style="-fx-background-color: #C3A495;" text="+ Agregar postcondiciones" onAction="#abrirPostcondiciones" >
-         <font>
-            <Font name="Arial Black" size="13.0" />
-         </font>
-         <effect>
-            <DropShadow />
-         </effect>
-      </Button>
-      <Button fx:id="btnGuardarTarea" layoutX="523.0" layoutY="525.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="145.0" style="-fx-background-color: #C3A495;" text="Guardar tarea" onAction="#guardarTarea" >
-         <font>
-            <Font name="Arial Black" size="13.0" />
-         </font>
-         <effect>
-            <DropShadow />
-         </effect>
-      </Button>
-      <Button fx:id="btnCancelar" layoutX="711.0" layoutY="525.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="144.0" style="-fx-background-color: #C3A495;" text="Cancelar" onAction="#cancelar" >
-         <font>
-            <Font name="Arial Black" size="13.0" />
-         </font>
-         <effect>
-            <DropShadow />
-         </effect>
-      </Button>
-      <Pane prefHeight="94.0" prefWidth="900.0" style="-fx-background-color: #D9CCC5;">
          <children>
-            <Button fx:id="btnVolver" layoutX="743.0" layoutY="27.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="111.0" style="-fx-background-color: #C3A495;" text="Volver" onAction="#volver" >
+            <ImageView fx:id="logoImageView" fitHeight="60.0" fitWidth="130.0"
+                       layoutX="15.0" layoutY="10.0"
+                       pickOnBounds="true" preserveRatio="true" />
+            
+            <Label layoutX="330.0" layoutY="22.0" text="Visor de Tareas" textFill="#2C1810">
                <font>
-                  <Font name="Arial Black" size="13.0" />
-               </font>
-               <effect>
-                  <DropShadow />
-               </effect>
-            </Button>
-            <Label layoutX="342.0" layoutY="26.0" prefHeight="41.0" prefWidth="178.0" text="Nueva Tarea">
-               <font>
-                  <Font name="Arial Black" size="24.0" />
+                  <Font name="Arial Black" size="26.0" />
                </font>
             </Label>
-            <ImageView fitHeight="74.0" fitWidth="165.0" layoutX="10.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../../../../../../../../../../Downloads/logo_UACM_sin_fondo.png" />
-               </image>
-            </ImageView>
          </children>
       </Pane>
-      <ComboBox fx:id="comboTipoTarea" layoutX="268.0" layoutY="288.0" prefHeight="25.0" prefWidth="234.0" />
+
+      <!-- DATOS DE OPERACION -->
+      <Pane layoutX="25.0" layoutY="100.0" prefHeight="60.0" prefWidth="800.0"
+            style="-fx-background-color: #FFFFFF; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #D9CCC5; -fx-border-width: 1;">
+         <children>
+            <Label layoutX="15.0" layoutY="22.0" text="Operacion:" style="-fx-font-family: 'Arial Black'; -fx-font-size: 13px;"/>
+            <TextField fx:id="txt_nombreOperacion" layoutX="110.0" layoutY="18.0" prefWidth="250.0" editable="false" 
+                       style="-fx-background-color: #F5F5F5; -fx-border-radius: 5; -fx-padding: 8;"/>
+            
+            <Label layoutX="400.0" layoutY="22.0" text="Estado:" style="-fx-font-family: 'Arial Black'; -fx-font-size: 13px;"/>
+            <TextField fx:id="txt_estado" layoutX="480.0" layoutY="18.0" prefWidth="150.0" editable="false" 
+                       style="-fx-background-color: #F5F5F5; -fx-border-radius: 5; -fx-padding: 8;"/>
+         </children>
+      </Pane>
+
+      <!-- TABLA DE TAREAS -->
+      <Label layoutX="30.0" layoutY="180.0" text="Lista de Tareas:" style="-fx-font-family: 'Arial Black'; -fx-font-size: 14px;"/>
+      
+      <TableView fx:id="tablaTareasVisor" layoutX="25.0" layoutY="205.0" prefHeight="280.0" prefWidth="800.0"
+                 style="-fx-background-color: #FFFFFF; -fx-background-radius: 10; -fx-border-radius: 10;">
+         <columns>
+            <TableColumn fx:id="tlc_nombre" text="Tarea" prefWidth="200.0"/>
+            <TableColumn fx:id="tlb_tipo" text="Tipo" prefWidth="120.0"/>
+            <TableColumn fx:id="tlb_descripcion" text="Descripcion" prefWidth="300.0"/>
+            <TableColumn fx:id="tlb_accionTarea" text="Acciones" prefWidth="150.0"/>
+         </columns>
+      </TableView>
+
+      <!-- BOTONES -->
+      <Button layoutX="25.0" layoutY="505.0"
+              prefHeight="40.0" prefWidth="160.0"
+              text="+ Nueva Tarea"
+              onAction="#abrirNuevaTarea"
+              style="-fx-background-color: #C3A495; -fx-font-family: 'Arial Black'; -fx-font-size: 13px; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;">
+         <effect>
+            <DropShadow color="#00000030" offsetY="2.0" radius="3.0" />
+         </effect>
+      </Button>
+
+      <Button layoutX="680.0" layoutY="505.0"
+              prefHeight="40.0" prefWidth="145.0"
+              text="Cerrar"
+              onAction="#cerrarVisor"
+              style="-fx-background-color: #C3A495; -fx-font-family: 'Arial Black'; -fx-font-size: 13px; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;">
+         <effect>
+            <DropShadow color="#00000030" offsetY="2.0" radius="3.0" />
+         </effect>
+      </Button>
+
+      <!-- FOOTER -->
+      <Pane layoutY="560.0" prefHeight="40.0" prefWidth="850.0"
+            style="-fx-background-color: #D9CCC5; -fx-border-width: 2 0 0 0; -fx-border-color: #C3A495;"/>
+
    </children>
 </Pane>

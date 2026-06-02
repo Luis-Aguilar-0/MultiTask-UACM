@@ -1,35 +1,41 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package mx.edu.uacm.is.slt.ds.multitask_uacm.controlador;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
+import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
-/**
- *
- * @author USER
- */
 public class PostcondicionesController {
     
     @FXML
+    private TextArea txtAreaDescripcion;
+    
+    private String textoOriginal = "";
+    
+    public void setTexto(String texto) {
+        this.textoOriginal = texto;
+        if (txtAreaDescripcion != null) {
+            txtAreaDescripcion.setText(texto);
+        }
+    }
+    
+    public String getTexto() {
+        return txtAreaDescripcion != null ? txtAreaDescripcion.getText() : "";
+    }
+    
+    @FXML
     private void guardar(ActionEvent event){
-        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
-        alerta.setTitle("Guardado");
-        alerta.setHeaderText(null);
-        alerta.setContentText("Postcondición guardada exitosamente.");
-
-        alerta.showAndWait();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
     }
     
     @FXML
     private void cancelar(ActionEvent event){
-        Stage stage= (Stage)((Node) event.getSource()).getScene().getWindow();
+        if (txtAreaDescripcion != null) {
+            txtAreaDescripcion.setText(textoOriginal);
+        }
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
     }
-    
 }

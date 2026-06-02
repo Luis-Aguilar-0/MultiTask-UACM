@@ -14,13 +14,14 @@ public class VisorEditorTareas {
         PANTALLA_VISOR_EDITOR_TAREAS = pantalla;
     }
 
-    public void mostrar(){ PANTALLA_VISOR_EDITOR_TAREAS.show();}
+    public void mostrar(){ 
+        PANTALLA_VISOR_EDITOR_TAREAS.show();
+    }
 
     private void cargarVista(){
         try {
-            String rutaFXML ="/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/VisorDeTareas.fxml";
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource(rutaFXML));
+            String rutaFXML = "/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/VisorDeTareas.fxml";
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(rutaFXML));
 
             if(fxmlLoader.getLocation() == null){
                 System.err.println("NO se encontro la ruta: " + rutaFXML);
@@ -28,10 +29,9 @@ public class VisorEditorTareas {
             }
 
             Parent vistaRaiz = fxmlLoader.load();
-            Scene ecena = new Scene(vistaRaiz);
-            PANTALLA_VISOR_EDITOR_TAREAS.setScene(ecena);
+            Scene escena = new Scene(vistaRaiz, 850, 600);
+            PANTALLA_VISOR_EDITOR_TAREAS.setScene(escena);
             PANTALLA_VISOR_EDITOR_TAREAS.setTitle("Visor de Tareas");
-
 
             PANTALLA_VISOR_EDITOR_TAREAS.showingProperty().addListener((observable, oldValue, newValue) -> {
                 if(!newValue){

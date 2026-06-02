@@ -4,35 +4,102 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="899.0" styleClass="root-background" stylesheets="@../css/estilos.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.NuevaOperacion">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" 
+      prefHeight="600.0" prefWidth="900.0" 
+      style="-fx-background-color: #F2EDE6;" 
+      stylesheets="@../css/estilos.css" 
+      xmlns="http://javafx.com/javafx/21" 
+      xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.NuevaOperacion">
+      
    <children>
-      <TextArea fx:id="txtArea_descripcion" layoutX="437.0" layoutY="263.0" prefHeight="200.0" prefWidth="355.0" styleClass="text-area" stylesheets="@../css/estilos.css" />
-      <Label layoutX="88.0" layoutY="277.0" prefHeight="41.0" prefWidth="248.0" text="Descripción:" />
-      <Label layoutX="88.0" layoutY="195.0" prefHeight="29.0" prefWidth="213.0" text="Nombre de la operación: ">
-         <font>
-            <Font size="17.0" />
-         </font></Label>
-      <Label fx:id="lbl_msgError" layoutX="423.0" layoutY="543.0" text="Label" visible="false" />
-      <TextField fx:id="txtField_nombreOp" layoutX="437.0" layoutY="182.0" prefHeight="26.0" prefWidth="355.0" styleClass="text-field" stylesheets="@../css/estilos.css" />
-      <Button fx:id="btn_guardarOp" layoutX="88.0" layoutY="504.0" mnemonicParsing="false" onAction="#ocClickNuevaOperacion" prefHeight="26.0" prefWidth="225.0" text="Guardar Operación" />
-      <Button fx:id="btn_cancelar" layoutX="555.0" layoutY="504.0" mnemonicParsing="false" onAction="#onClosedVentana" prefHeight="26.0" prefWidth="225.0" text="Cancelar" />
-      <Pane prefHeight="88.0" prefWidth="900.0" styleClass="root-pane" stylesheets="@../css/estilos.css">
+   
+      <!-- HEADER -->
+      <Pane prefHeight="90.0" prefWidth="900.0" 
+            style="-fx-background-color: #D9CCC5; -fx-border-width: 0 0 2 0; -fx-border-color: #C3A495;">
          <children>
-            <ImageView fitHeight="119.0" fitWidth="181.0" layoutX="14.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../../../../../../../../../../Downloads/logo_UACM_sin_fondo.png" />
-               </image>
-            </ImageView>
-            <Label layoutX="340.0" layoutY="26.0" prefHeight="53.0" prefWidth="122.0" text="Multi Task - UACM">
+            <ImageView fx:id="logoImageView" fitHeight="70.0" fitWidth="150.0"
+                       layoutX="20.0" layoutY="10.0"
+                       pickOnBounds="true" preserveRatio="true" />
+            
+            <!-- Titulo sin CSS - estilo inline -->
+            <Label layoutX="380.0" layoutY="28.0" text="Crear Operacion"
+                   style="-fx-font-family: 'Arial Black'; -fx-font-size: 24px;" />
+         </children>
+         <effect>
+            <DropShadow color="#2C1810" height="10.0" radius="4.5" width="10.0" />
+         </effect>
+      </Pane>
+
+      <!-- CONTENEDOR PRINCIPAL -->
+      <Pane layoutX="60.0" layoutY="120.0" prefHeight="440.0" prefWidth="780.0" 
+            style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #D9CCC5; -fx-border-width: 2;">
+         <effect>
+            <DropShadow color="#00000015" offsetY="4.0" radius="10.0" />
+         </effect>
+         <children>
+         
+            <!-- Texto descriptivo con CSS normal -->
+            <Label layoutX="40.0" layoutY="30.0" text="Define los detalles generales para inicializar un nuevo proceso en el gestor." 
+                   styleClass="label-normal" />
+
+            <!-- Campo Nombre -->
+            <Label layoutX="40.0" layoutY="85.0" text="Nombre de la operacion:" styleClass="label-normal" />
+
+            <TextField fx:id="txtField_nombreOp" 
+                       layoutX="260.0" layoutY="80.0" 
+                       prefHeight="40.0" prefWidth="480.0" 
+                       promptText="Ej. Proceso de facturacion" 
+                       style="-fx-font-size: 15px; -fx-background-radius: 8; -fx-border-radius: 8; -fx-padding: 8px;">
+
+            </TextField>
+
+            <!-- Campo Descripcion -->
+            <Label layoutX="40.0" layoutY="150.0" text="Descripcion del flujo:" styleClass="label-normal" />
+
+            <TextArea fx:id="txtArea_descripcion" 
+                      layoutX="260.0" layoutY="150.0" 
+                      prefHeight="170.0" prefWidth="480.0" 
+                      promptText="Describe el proposito de esta operacion y su objetivo general..." 
+                      style="-fx-font-size: 15px; -fx-background-radius: 8; -fx-border-radius: 8; -fx-padding: 8px;">
+
+            </TextArea>
+
+            <!-- Mensaje de Error -->
+            <Label fx:id="lbl_msgError" 
+                   alignment="CENTER" 
+                   layoutX="260.0" layoutY="335.0" 
+                   prefHeight="30.0" prefWidth="480.0" 
+                   text="Error: Todos los campos son obligatorios" 
+                   textFill="#d32f2f" 
+                   visible="false">
                <font>
-                  <Font size="24.0" />
+                  <Font name="Arial Black" size="14.0" />
                </font>
             </Label>
+
+            <!-- BOTONES -->
+            <Button fx:id="btn_guardarOp" 
+                    layoutX="260.0" layoutY="375.0" 
+                    mnemonicParsing="false" 
+                    onAction="#ocClickNuevaOperacion" 
+                    prefHeight="45.0" prefWidth="220.0" 
+                    styleClass="button" 
+                    text="Guardar Operacion" />
+            
+            <Button fx:id="btn_cancelar" 
+                    layoutX="500.0" layoutY="375.0" 
+                    mnemonicParsing="false" 
+                    onAction="#onClosedVentana" 
+                    prefHeight="45.0" prefWidth="220.0" 
+                    styleClass="button" 
+                    text="Cancelar" />
+                    
          </children>
       </Pane>
    </children>

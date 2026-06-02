@@ -5,62 +5,92 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: F2EDE6;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.PantallaPrincipalController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" 
+      prefHeight="600.0" prefWidth="900.0" 
+      style="-fx-background-color: #F2EDE6;" 
+      stylesheets="@../css/estilos.css" 
+      xmlns="http://javafx.com/javafx/21" 
+      xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.PantallaPrincipalController">
+      
    <children>
-      <TableView fx:id="tlbV_tablaViewPrincipal" layoutX="27.0" layoutY="185.0" prefHeight="341.0" prefWidth="845.0" style="-fx-background-color: #D9CCC5;">
-        <columns>
-          <TableColumn fx:id="tlb_operaciones" prefWidth="192.80007362365723" text="Operaciones" />
-          <TableColumn fx:id="tlb_tareas" prefWidth="249.60003662109375" text="Tareas" />
-            <TableColumn fx:id="tlb_estado" prefWidth="224.80001831054688" text="Estado" />
-            <TableColumn fx:id="tlb_accion" prefWidth="181.59991455078125" text="Acción" />
-        </columns>
-         <effect>
-            <DropShadow />
-         </effect>
-      </TableView>
-      <Button layoutX="27.0" layoutY="110.0" mnemonicParsing="false" onAction="#abrirAcercaDe" prefHeight="43.0" prefWidth="150.0" style="-fx-background-color: #C3A495;" text="Acerca de...">
-         <font>
-            <Font name="Arial Black" size="13.0" />
-         </font>
-         <effect>
-            <DropShadow />
-         </effect>
-      </Button>
-      <Button layoutX="375.0" layoutY="110.0" mnemonicParsing="false" onAction="#onButtonVistaEditorOperacion" prefHeight="43.0" prefWidth="150.0" style="-fx-background-color: #C3A495;" text="Editar">
-         <font>
-            <Font name="Arial Black" size="13.0" />
-         </font>
-         <effect>
-            <DropShadow />
-         </effect>
-      </Button>
-      <Button fx:id="btn_nuevaOperacion" layoutX="722.0" layoutY="110.0" mnemonicParsing="false" onAction="#onButtonNuevaOperacion" prefHeight="43.0" prefWidth="150.0" style="-fx-background-color: #C3A495;" text="+Nueva operación">
-         <font>
-            <Font name="Arial Black" size="13.0" />
-         </font>
-         <effect>
-            <DropShadow />
-         </effect>
-      </Button>
-      <Pane prefHeight="88.0" prefWidth="900.0" style="-fx-background-color: #D9CCC5;">
+   
+      <!-- HEADER -->
+      <Pane prefHeight="90.0" prefWidth="900.0" 
+            style="-fx-background-color: #D9CCC5; -fx-border-width: 0 0 2 0; -fx-border-color: #C3A495;">
          <children>
-            <ImageView fitHeight="119.0" fitWidth="181.0" layoutX="14.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../../../../../../../../../../Downloads/logo_UACM_sin_fondo.png" />
-               </image>
-            </ImageView>
-            <Label layoutX="340.0" layoutY="26.0" text="Multi Task - UACM">
-               <font>
-                  <Font name="Arial Black" size="24.0" />
-               </font>
-            </Label>
+            <ImageView fx:id="logoImageView" fitHeight="70.0" fitWidth="150.0" 
+                       layoutX="20.0" layoutY="10.0" 
+                       pickOnBounds="true" preserveRatio="true" />
+            
+            <!-- Titulo sin CSS - estilo inline -->
+            <Label layoutX="340.0" layoutY="26.0"
+       text="MultiTask - UACM"
+       style="-fx-text-fill: #2C1810;">
+    <font> 
+        <Font name="Arial Black" size="30.0" />
+    </font>
+</Label>
+         </children>
+         <effect>
+            <DropShadow color="#0000001a" height="10.0" radius="4.5" width="10.0" />
+         </effect>
+      </Pane>
+
+      <!-- BOTONES -->
+      <Button layoutX="40.0" layoutY="115.0" 
+              mnemonicParsing="false" 
+              onAction="#abrirAcercaDe" 
+              prefHeight="40.0" prefWidth="160.0" 
+              styleClass="button" 
+              text="Acerca de...">
+         <effect>
+            <DropShadow color="#00000030" offsetY="2.0" radius="3.0" />
+         </effect>
+      </Button>
+      
+      <Button fx:id="btn_nuevaOperacion" 
+              layoutX="680.0" layoutY="115.0" 
+              mnemonicParsing="false" 
+              onAction="#onButtonNuevaOperacion" 
+              prefHeight="40.0" prefWidth="180.0" 
+              styleClass="button" 
+              text="+ Nueva operacion">
+         <effect>
+            <DropShadow color="#00000030" offsetY="2.0" radius="3.0" />
+         </effect>
+      </Button>
+
+      <!-- TABLA -->
+      <Pane layoutX="40.0" layoutY="180.0" 
+            prefHeight="355.0" prefWidth="820.0" 
+            style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #D9CCC5; -fx-border-width: 2;">
+         <effect>
+            <DropShadow color="#00000015" offsetY="4.0" radius="10.0" />
+         </effect>
+         <children>
+            <TableView fx:id="tlbV_tablaViewPrincipal" 
+                       layoutX="2.0" layoutY="2.0" 
+                       prefHeight="350.0" prefWidth="816.0" 
+                       style="-fx-background-color: transparent; -fx-font-family: 'Arial'; -fx-font-size: 14px;">
+               <columns>
+                  <TableColumn fx:id="tlb_operaciones" prefWidth="180.0" text="Operaciones" />
+                  <TableColumn fx:id="tlb_tareas" prefWidth="160.0" text="Tareas" />
+                  <TableColumn fx:id="tlb_estado" prefWidth="160.0" text="Estado" />
+                  <TableColumn fx:id="tlb_accion" prefWidth="316.0" text="Accion" />
+               </columns>
+            </TableView>
          </children>
       </Pane>
-      <Pane layoutY="569.0" prefHeight="33.0" prefWidth="900.0" style="-fx-background-color: #D9CCC5;" />
+
+      <!-- FOOTER -->
+      <Pane layoutY="570.0" 
+            prefHeight="30.0" prefWidth="900.0" 
+            style="-fx-background-color: #D9CCC5; -fx-border-width: 2 0 0 0; -fx-border-color: #C3A495;" />
+            
    </children>
 </Pane>

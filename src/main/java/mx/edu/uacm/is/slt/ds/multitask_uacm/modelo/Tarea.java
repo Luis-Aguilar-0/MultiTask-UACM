@@ -17,7 +17,7 @@ public class Tarea implements Ejecutable, Runnable {
     private List<String> dependencias;
     private boolean pausable;
 
-    // --- NUEVAS PROPIEDADES PARA ROBUSTECER EL CONTROL GRÁFICO Y HILOS ---
+    // Progreso y control de hilos
     private double progreso;
     private Thread hilo;
     private volatile boolean corriendo;
@@ -31,7 +31,7 @@ public class Tarea implements Ejecutable, Runnable {
         this.postcondiciones = new ArrayList<>();
         this.comportamiento = "";
         this.estado = "No ejecutada";
-        this.tipoTarea = "Inicial (puede iniciar sola)";
+        this.tipoTarea = "Normal";
         this.dependencias = new ArrayList<>();
         this.pausable = true;
         this.corriendo = false;
@@ -46,7 +46,7 @@ public class Tarea implements Ejecutable, Runnable {
         this.postcondiciones = new ArrayList<>();
         this.comportamiento = "";
         this.estado = "No ejecutada";
-        this.tipoTarea = "Inicial (puede iniciar sola)";
+        this.tipoTarea = "Normal";
         this.dependencias = new ArrayList<>();
         this.pausable = true;
         this.corriendo = false;
@@ -54,7 +54,7 @@ public class Tarea implements Ejecutable, Runnable {
         this.progreso = 0.0;
     }
 
-    // ─── Getters y Setters Adicionales de Progreso ───────────────────────────
+    // Getters y Setters
     public double getProgreso() {
         return progreso;
     }
@@ -95,7 +95,6 @@ public class Tarea implements Ejecutable, Runnable {
         return estado;
     }
 
-    // Seteo seguro de estados notificando a la interfaz
     public void setEstado(String estado) {
         Platform.runLater(() -> this.estado = estado);
     }
@@ -150,14 +149,14 @@ public class Tarea implements Ejecutable, Runnable {
         }
     }
 
-    // ─── Ejecución Asíncrona con Hilos e Interfaz ─────────────────────────────
+    // Ejecucion
     public void ejecutar() {
         if (hilo != null && hilo.isAlive()) {
             return;
         }
         corriendo = true;
         pausada = false;
-        setEstado("En ejecución");
+        setEstado("En ejecucion");
         hilo = new Thread(this, "Hilo-" + nombre);
         hilo.setDaemon(true);
         hilo.start();
@@ -166,12 +165,11 @@ public class Tarea implements Ejecutable, Runnable {
     @Override
     public void run() {
         try {
-            // Simulación reactiva paso a paso de 0% a 100% de progreso
             while (progreso < 100.0 && corriendo) {
                 synchronized (bloqueo) {
                     while (pausada && corriendo) {
                         setEstado("Pausada");
-                        bloqueo.wait(); // Suspensión real del hilo sin consumo de CPU
+                        bloqueo.wait();
                     }
                 }
 
@@ -179,10 +177,7 @@ public class Tarea implements Ejecutable, Runnable {
                     break;
                 }
 
-                // Simula procesamiento del flujo
                 Thread.sleep(200);
-
-                // Modificación del progreso en zona segura de JavaFX
                 Platform.runLater(() -> progreso += 10.0);
                 System.out.println("[" + nombre + "] Progreso: " + progreso + "%");
             }
@@ -213,8 +208,8 @@ public class Tarea implements Ejecutable, Runnable {
         }
         synchronized (bloqueo) {
             pausada = false;
-            setEstado("En ejecución");
-            bloqueo.notifyAll(); // Despierta el hilo secundario
+            setEstado("En ejecucion");
+            bloqueo.notifyAll();
         }
         System.out.println("[" + nombre + "] Reanudada.");
     }
@@ -227,9 +222,9 @@ public class Tarea implements Ejecutable, Runnable {
             bloqueo.notifyAll();
         }
         if (hilo != null) {
-            hilo.interrupt(); // Interrumpe inmediatamente si el hilo estaba en sleep()
+            hilo.interrupt();
         }
-        Platform.runLater(() -> progreso = 0.0); // Reseteo completo conforme a la ERS
+        Platform.runLater(() -> progreso = 0.0);
         setEstado("Detenida");
         hilo = null;
     }

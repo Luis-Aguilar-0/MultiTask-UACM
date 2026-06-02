@@ -1,14 +1,20 @@
 package mx.edu.uacm.is.slt.ds.multitask_uacm.controlador;
 
-import javafx.collections.ListChangeListener;
+import java.io.InputStream;
+
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.GestorOperaciones;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.Operacion;
@@ -17,10 +23,6 @@ import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.NuevaOperacion;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.VisorEditorOperacion;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.vista.VisorEditorTareas;
 
-/**
- * En esta clase se implementan todas las interacciones que realiza el usuario con
- * botones, campos de texto etc..
- */
 public class PantallaPrincipalController {
 
     private GestorOperaciones gestor = GestorOperaciones.obtenerInstancia();
@@ -28,120 +30,135 @@ public class PantallaPrincipalController {
 
     @FXML
     public TableColumn<Operacion, String> tlb_tareas;
-
     @FXML
     public TableColumn<Operacion, String> tlb_estado;
-
     @FXML
     public TableColumn<Operacion, String> tlb_accion;
-
     @FXML
     public TableView<Operacion> tlbV_tablaViewPrincipal;
-
     @FXML
     private TableColumn<Operacion, String> tlb_operaciones;
-
     @FXML
-    private Label texto;
-
-    @FXML
-    private Button botonVisorEditorOperacion;
-
-    @FXML
-    private Button buttonMostrarOperciones;
-
-    @FXML
-    private Button buttonMostrarInfoSistema;
-
-    @FXML
-    private Button btn_nuevaOperacion;
+    private ImageView logoImageView;
 
     @FXML
     public void initialize() {
-        // ===== CONFIGURACIÓN DE COLUMNAS =====
-        // Vinculación reactiva de propiedades del Modelo a las columnas de la Vista
+        cargarLogo();
+        configurarColumnas();
+        configurarBotonAccion();
+        cargarDatos();
+    }
+
+    private void cargarLogo() {
+        String ruta = "/mx/edu/uacm/is/slt/ds/multitask_uacm/logo/logo.png";
+        InputStream inputStream = getClass().getResourceAsStream(ruta);
+        if (inputStream != null) {
+            logoImageView.setImage(new Image(inputStream));
+        }
+    }
+
+    private void configurarColumnas() {
         tlb_operaciones.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        tlb_tareas.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+        tlb_tareas.setCellValueFactory(cellData -> {
+            Operacion op = cellData.getValue();
+            int numTareas = op.getTareas().size();
+            return new javafx.beans.property.SimpleStringProperty(numTareas + " tareas");
+        });
         tlb_estado.setCellValueFactory(new PropertyValueFactory<>("estado"));
-        
-        // ===== CONFIGURACIÓN ESPECIAL DE LA COLUMNA ACCIÓN CON BOTÓN =====
+
+        tlb_operaciones.setStyle("-fx-alignment: CENTER;");
+        tlb_tareas.setStyle("-fx-alignment: CENTER;");
+        tlb_estado.setStyle("-fx-alignment: CENTER;");
+    }
+
+    private void configurarBotonAccion() {
         tlb_accion.setCellFactory(param -> new TableCell<Operacion, String>() {
-            private final Button btnAbrirVer = new Button("Abrir");
-            
+            private final Button btnAbrir = new Button("Abrir");
+            private final Button btnEditar = new Button("Editar");
+            private final Button btnEliminar = new Button("Elim");
+            private final Button btnInfo = new Button("Info");
+            private final HBox contenedor = new HBox(6, btnAbrir, btnEditar, btnEliminar, btnInfo);
+
             {
-                btnAbrirVer.setOnAction(event -> {
-                    operacionSeleccionada = getTableView().getItems().get(getIndex());
-                    VisorEditorTareas visorEditorTareas = VisorEditorTareas.obtenerInstancia(new Stage());
-                    visorEditorTareas.mostrar();
-                    System.out.println("Consola: Abriendo operación -> " + operacionSeleccionada.getNombre());
+                btnAbrir.getStyleClass().add("button");
+                btnEditar.getStyleClass().add("button");
+                btnEliminar.getStyleClass().add("button");
+                btnInfo.getStyleClass().add("button");
+
+                String estilo = "-fx-font-size: 11px; -fx-padding: 4 6; -fx-background-radius: 6; -fx-pref-width: 55;";
+                btnAbrir.setStyle(estilo);
+                btnEditar.setStyle(estilo);
+                btnEliminar.setStyle(estilo);
+                btnInfo.setStyle(estilo);
+
+                contenedor.setAlignment(Pos.CENTER);
+
+                btnAbrir.setOnAction(e -> {
+                    Operacion op = getTableRow().getItem();
+                    if (op != null) {
+                        VisorDeTareasController.setOperacionActual(op);
+                        VisorEditorTareas.obtenerInstancia(new Stage()).mostrar();
+                    }
+                });
+
+                btnEditar.setOnAction(e -> {
+                    Operacion op = getTableRow().getItem();
+                    if (op != null) {
+                        VisorEditorOperacion.obtenerInstancia(new Stage(), op).mostrar();
+                    }
+                });
+
+                btnEliminar.setOnAction(e -> {
+                    Operacion op = getTableRow().getItem();
+                    if (op != null) {
+                        gestor.getOperaciones().remove(op);
+                    }
+                });
+
+                btnInfo.setOnAction(e -> {
+                    Operacion op = getTableRow().getItem();
+                    if (op != null) {
+                        Alert a = new Alert(Alert.AlertType.INFORMATION);
+                        a.setTitle("Informacion de la operacion");
+                        a.setHeaderText(op.getNombre());
+                        a.setContentText("Descripcion: " + op.getDescripcion());
+                        a.showAndWait();
+                    }
                 });
             }
-            
+
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(btnAbrirVer);
+                setGraphic(empty || getTableRow() == null || getTableRow().getItem() == null ? null : contenedor);
+                if (!empty) {
+                    setAlignment(Pos.CENTER);
                 }
             }
         });
-        
-        // ===== LISTENER DE SELECCIÓN DE FILA =====
-        tlbV_tablaViewPrincipal.getSelectionModel().selectedItemProperty().addListener((obs, anterior, seleccion) -> {
-            if (seleccion != null) {
-                operacionSeleccionada = seleccion;
-                System.out.println("Consola: Operación seleccionada correctamente -> " + operacionSeleccionada.getNombre());
-            }
-        });
-        
-        // ===== CARGA DE DATOS Y ACTUALIZACIÓN =====
-        ObservableList<Operacion> operaciones = (ObservableList<Operacion>) gestor.getOperaciones();
-        operaciones.addListener((ListChangeListener<Operacion>) c -> tlbV_tablaViewPrincipal.refresh());
-        tlbV_tablaViewPrincipal.setItems(operaciones);
     }
 
-    @FXML
-    public void onButtonVistaEditorOperacion() {
-        Operacion seleccionada = tlbV_tablaViewPrincipal.getSelectionModel().getSelectedItem();
+    private void cargarDatos() {
+        ObservableList<Operacion> operaciones = FXCollections.observableArrayList(gestor.getOperaciones());
+        tlbV_tablaViewPrincipal.setItems(operaciones);
 
-        if (seleccionada == null) {
-            System.out.println("Consola: Error, debes seleccionar una operación de la tabla.");
-            return;
-        }
-
-        VisorEditorOperacionController.guardarReferenciaOperacion(seleccionada);
-        VisorEditorOperacion visorEditorOperacion = VisorEditorOperacion.obtenerInstancia(new Stage());
-        visorEditorOperacion.mostrar();
-        tlbV_tablaViewPrincipal.refresh();
+        gestor.addListener(() -> {
+            javafx.application.Platform.runLater(() -> {
+                ObservableList<Operacion> nuevasOperaciones = FXCollections.observableArrayList(gestor.getOperaciones());
+                tlbV_tablaViewPrincipal.setItems(nuevasOperaciones);
+                System.out.println("Lista de operaciones actualizada");
+            });
+        });
     }
 
     @FXML
     public void onButtonNuevaOperacion() {
-        NuevaOperacion nuevaOperacion = NuevaOperacion.obtenerInstancia(new Stage());
-        nuevaOperacion.mostrar();
+        NuevaOperacion.obtenerInstancia(new Stage()).mostrar();
     }
 
     @FXML
-    public void onButtonMostrarInfoSistemaClick() {
-        AcercaDe acerdaDe = AcercaDe.obtenerInstancia(new Stage());
-        acerdaDe.mostrar();
+    public void abrirAcercaDe() {
+        AcercaDe.obtenerInstancia(new Stage()).mostrar();
     }
-
-    @FXML
-    public void onButtonMostrarOperacioes() {
-        tlbV_tablaViewPrincipal.refresh();
-    }
-
-    @FXML
-    protected void onHelloButtonClick() {
-        texto.setText("Sistema MultiTask-UACM listo.");
-    }
-
-    @FXML
-    private void abrirAcercaDe() {
-        AcercaDe acerca = AcercaDe.obtenerInstancia(new Stage());
-        acerca.mostrar();
-    }
+    
 }

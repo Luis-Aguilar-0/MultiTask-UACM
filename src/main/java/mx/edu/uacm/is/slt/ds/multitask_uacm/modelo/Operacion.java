@@ -1,10 +1,9 @@
 package mx.edu.uacm.is.slt.ds.multitask_uacm.modelo;
 
+import java.util.List;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Operacion implements Ejecutable {
     private String nombre;
@@ -84,7 +83,7 @@ public class Operacion implements Ejecutable {
 
     @Override
     public void pausar() {
-        estado = Estado.PAUSADO;
+        estado = Estado.PAUSADA;  // Cambiado de PAUSADO a PAUSADA
         for (Tarea tarea : tareas) {
             tarea.pausar();
         }
