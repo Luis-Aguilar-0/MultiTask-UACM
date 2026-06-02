@@ -50,7 +50,7 @@ public class VisorEditorOperacion {
                     singleton = null;
                 }
             } );
-            //ventanaEditorOperacion.show();
+
 
 
 

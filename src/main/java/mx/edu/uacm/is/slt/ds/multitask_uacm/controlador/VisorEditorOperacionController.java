@@ -18,14 +18,14 @@ public class VisorEditorOperacionController {
     private Operacion operacionActual;
     private static Operacion operacionPuente;
 
-    // ─── COMPONENTES PARA LA VENTANA DE EJECUCIÓN (VisorDeTareas.fxml) ────────
+
     @FXML private TableView<Tarea> tablaTareasInternas;
     @FXML private TableColumn<Tarea, String> colNombre;
     @FXML private TableColumn<Tarea, String> colTipoDesc;
     @FXML private TableColumn<Tarea, String> colEstado;
     @FXML private TableColumn<Tarea, Double> colProgreso;
 
-    // ─── COMPONENTES PARA LA VENTANA DE DISEÑO (vistaEditorOperaciones.fxml) ───
+
     @FXML private TextField txtNombreOperacionEdicion;
     @FXML private ComboBox<String> comboEstadoOperacion;
     @FXML private ListView<Tarea> listaTareasEdicion;
@@ -40,7 +40,7 @@ public class VisorEditorOperacionController {
 
     @FXML
     public void initialize() {
-        // 1. Inicializa columnas si estamos en la ventana de Ejecución
+
         if (colNombre != null) {
             colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
             colTipoDesc.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
@@ -48,19 +48,19 @@ public class VisorEditorOperacionController {
             colProgreso.setCellValueFactory(new PropertyValueFactory<>("progreso"));
         }
 
-        // 2. Inicializa el ComboBox con las constantes exactas de tu Enum Estado
+
         if (comboEstadoOperacion != null) {
             comboEstadoOperacion.getItems().clear();
             comboEstadoOperacion.getItems().addAll("NO_EJECUTADA", "EN_EJECUCION", "PAUSADA", "DETENIDA", "FINALIZADA");
         }
 
-        // 3. Absorbe la operación del puente estático
+
         if (operacionPuente != null) {
             this.operacionActual = operacionPuente;
             mostrarDatos();
         }
         
-        // 4. Hilo de Refresco Gráfico en Segundo Plano (Mantiene la UI al día con tus hilos)
+
         Thread refrescadorGrafico = new Thread(() -> {
             try {
                 while (operacionActual != null) {

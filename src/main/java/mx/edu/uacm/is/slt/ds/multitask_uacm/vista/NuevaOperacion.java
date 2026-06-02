@@ -36,7 +36,7 @@ public class NuevaOperacion {
             PANTALLA_NUEVA_OPERACION.setScene(escena);
             PANTALLA_NUEVA_OPERACION.setTitle("Nueva Operacion");
 
-            /*Logica para permitir abrir de nuevo la ventana*/
+
             PANTALLA_NUEVA_OPERACION.showingProperty().addListener((obs,odlValue,newValue) -> {
                 if(!newValue){
                     singleton = null;

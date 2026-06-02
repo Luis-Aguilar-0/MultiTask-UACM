@@ -15,117 +15,136 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.Operacion;
+import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.Tarea;
 
-/**
- *
- * @author USER
- */
 public class NuevaTareaController {
-    
+
+    @FXML private TextField txtNombreTarea;
+    @FXML private TextField txtDescripcion;
+    @FXML private TextField txtDependencias;
+    @FXML private ComboBox<String> comboTipoTarea;
+
+
+    private Operacion operacionActual;
+
     @FXML
-    private TextField txtNombreTarea;
-    @FXML
-    private TextField txtDescripcion;
-    @FXML
-    private TextField txtDependencias;
-    @FXML
-    private ComboBox<String> comboTipoTarea;
-    
-    @FXML
-    public void initialize(){
-        
-        //carga las opciones del comboBox
+    public void initialize() {
         comboTipoTarea.getItems().addAll(
-        "Secuencial (depende de otras tareas",
-        "Inicial (puede iniciar sola)",
-        "Hoja (no genera otras tareas)" 
-    );
-    
-    //sleecciona la primera opcion por defecto
-    comboTipoTarea.getSelectionModel().selectFirst();
-    }
-    
-    @FXML
-    private void guardarTarea(ActionEvent event){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Éxito");
-        alert.setHeaderText(null);
-        alert.setContentText("La tarea se guardó correctamente");
-        alert.showAndWait();
-    }
-    @FXML
-    private void abrirPrecondiciones(ActionEvent event){
-        try {
-
-        FXMLLoader loader = new FXMLLoader(
-            getClass().getResource("/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/Precondiciones.fxml")
+                "Secuencial (depende de otras tareas)",
+                "Inicial (puede iniciar sola)",
+                "Hoja (no genera otras tareas)"
         );
+        comboTipoTarea.getSelectionModel().selectFirst();
+    }
 
-        Parent root = loader.load();
+    /** Llamar desde VisorDeTareasController antes de mostrar esta pantalla */
+    public void setOperacion(Operacion op) {
+        this.operacionActual = op;
+    }
 
-        Stage stage = new Stage();
-        stage.setTitle("Precondiciones");
-        stage.setScene(new Scene(root));
-        stage.show();
+    @FXML
+    private void guardarTarea(ActionEvent event) {
+        String nombre = txtNombreTarea.getText().trim();
+        String descripcion = txtDescripcion.getText().trim();
+        String dependencia = txtDependencias.getText().trim();
+        String tipo = comboTipoTarea.getValue();
 
-        }catch (IOException e) {
+
+        if (nombre.isEmpty()) {
+            mostrarAlerta(Alert.AlertType.WARNING, "El nombre de la tarea no puede estar vacío.");
+            return;
+        }
+
+
+        Tarea tarea = new Tarea(nombre, descripcion);
+        tarea.setTipoTarea(tipo);
+        if (!dependencia.isEmpty()) {
+            tarea.agregarDependencia(dependencia);
+        }
+
+
+        if (operacionActual != null) {
+            operacionActual.agregarTarea(tarea);
+            mostrarAlerta(Alert.AlertType.INFORMATION, "Tarea '" + nombre + "' guardada correctamente.");
+            volverAlVisor(event);
+        } else {
+            mostrarAlerta(Alert.AlertType.WARNING, "No hay operación seleccionada. No se pudo guardar la tarea.");
+        }
+    }
+
+    @FXML
+    private void abrirPrecondiciones(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/Precondiciones.fxml")
+            );
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Precondiciones");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        
     }
-    
+
     @FXML
-    private void abrirPostcondiciones(ActionEvent event){
+    private void abrirPostcondiciones(ActionEvent event) {
         try {
-
-        FXMLLoader loader = new FXMLLoader(
-            getClass().getResource(
-                "/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/Postcondiciones.fxml"
-            )
-        );
-
-        Parent root = loader.load();
-
-        Stage stage = new Stage();
-        stage.setTitle("Postcondiciones");
-        stage.setScene(new Scene(root));
-        stage.show();
-
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/Postcondiciones.fxml")
+            );
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Postcondiciones");
+            stage.setScene(new Scene(root));
+            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     @FXML
-    private void cancelar(ActionEvent event){
+    private void cancelar(ActionEvent event) {
         txtNombreTarea.clear();
         txtDescripcion.clear();
         txtDependencias.clear();
-
         comboTipoTarea.getSelectionModel().selectFirst();
     }
+
     @FXML
-    private void volver(ActionEvent event){
+    private void volver(ActionEvent event) {
+        volverAlVisor(event);
+    }
+
+
+
+    private void volverAlVisor(ActionEvent event) {
         try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/VisorDeTareas.fxml")
+            );
+            Parent root = loader.load();
 
-        FXMLLoader loader = new FXMLLoader(
-            getClass().getResource(
-                "/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/VisorDeTareas.fxml"
-            )
-        );
 
-        Parent root = loader.load();
+            VisorDeTareasController controlador = loader.getController();
+            controlador.setOperacion(operacionActual);
 
-        Stage stage = (Stage)((Node)event.getSource())
-                .getScene()
-                .getWindow();
-
-        stage.setScene(new Scene(root));
-        stage.show();
-
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Visor de Tareas");
+            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
+    private void mostrarAlerta(Alert.AlertType tipo, String mensaje) {
+        Alert alert = new Alert(tipo);
+        alert.setTitle(tipo == Alert.AlertType.WARNING ? "Aviso" : "Éxito");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
 }

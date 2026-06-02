@@ -2,8 +2,6 @@ package mx.edu.uacm.is.slt.ds.multitask_uacm.modelo;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class Operacion implements Ejecutable {
@@ -26,44 +24,23 @@ public class Operacion implements Ejecutable {
         this.estado = Estado.NO_EJECUTADA;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    public String getDescripcion() { return descripcion; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
+    public List<Tarea> getTareas() { return tareas; }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public List<Tarea> getTareas() {
-        return tareas;
-    }
-
-    public Estado getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Estado estado) {
-        this.estado = estado;
-    }
+    public Estado getEstado() { return estado; }
+    public void setEstado(Estado estado) { this.estado = estado; }
 
     public void agregarTarea(Tarea tarea) {
-        if (tarea != null) {
-            tareas.add(tarea);
-        }
+        if (tarea != null) tareas.add(tarea);
     }
 
     public void eliminarTarea(int indice) {
-        if (indice >= 0 && indice < tareas.size()) {
-            tareas.remove(indice);
-        }
+        if (indice >= 0 && indice < tareas.size()) tareas.remove(indice);
     }
 
     public void moverTareaArriba(int indice) {
@@ -85,29 +62,21 @@ public class Operacion implements Ejecutable {
     @Override
     public void pausar() {
         estado = Estado.PAUSADO;
-        for (Tarea tarea : tareas) {
-            tarea.pausar();
-        }
+        for (Tarea tarea : tareas) tarea.pausar();
     }
 
     @Override
     public void reanudar() {
         estado = Estado.EN_EJECUCION;
-        for (Tarea tarea : tareas) {
-            tarea.reanudar();
-        }
+        for (Tarea tarea : tareas) tarea.reanudar();
     }
 
     @Override
     public void detener() {
         estado = Estado.DETENIDA;
-        for (Tarea tarea : tareas) {
-            tarea.detener();
-        }
+        for (Tarea tarea : tareas) tarea.detener();
     }
 
     @Override
-    public String toString() {
-        return nombre;
-    }
+    public String toString() { return nombre; }
 }

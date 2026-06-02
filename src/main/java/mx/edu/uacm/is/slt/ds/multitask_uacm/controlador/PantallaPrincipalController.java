@@ -58,20 +58,20 @@ public class PantallaPrincipalController {
 
     @FXML
     public void initialize() {
-        // ===== CONFIGURACIÓN DE COLUMNAS =====
-        // Vinculación reactiva de propiedades del Modelo a las columnas de la Vista
+
         tlb_operaciones.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         tlb_tareas.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
         tlb_estado.setCellValueFactory(new PropertyValueFactory<>("estado"));
         
-        // ===== CONFIGURACIÓN ESPECIAL DE LA COLUMNA ACCIÓN CON BOTÓN =====
+
         tlb_accion.setCellFactory(param -> new TableCell<Operacion, String>() {
             private final Button btnAbrirVer = new Button("Abrir");
             
             {
                 btnAbrirVer.setOnAction(event -> {
                     operacionSeleccionada = getTableView().getItems().get(getIndex());
-                    VisorEditorTareas visorEditorTareas = VisorEditorTareas.obtenerInstancia(new Stage());
+
+                    VisorEditorTareas visorEditorTareas = VisorEditorTareas.obtenerInstancia(new Stage(), operacionSeleccionada);
                     visorEditorTareas.mostrar();
                     System.out.println("Consola: Abriendo operación -> " + operacionSeleccionada.getNombre());
                 });
@@ -88,7 +88,7 @@ public class PantallaPrincipalController {
             }
         });
         
-        // ===== LISTENER DE SELECCIÓN DE FILA =====
+
         tlbV_tablaViewPrincipal.getSelectionModel().selectedItemProperty().addListener((obs, anterior, seleccion) -> {
             if (seleccion != null) {
                 operacionSeleccionada = seleccion;
@@ -96,7 +96,7 @@ public class PantallaPrincipalController {
             }
         });
         
-        // ===== CARGA DE DATOS Y ACTUALIZACIÓN =====
+
         ObservableList<Operacion> operaciones = (ObservableList<Operacion>) gestor.getOperaciones();
         operaciones.addListener((ListChangeListener<Operacion>) c -> tlbV_tablaViewPrincipal.refresh());
         tlbV_tablaViewPrincipal.setItems(operaciones);

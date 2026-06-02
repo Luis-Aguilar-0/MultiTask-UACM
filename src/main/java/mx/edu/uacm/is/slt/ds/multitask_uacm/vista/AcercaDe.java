@@ -44,7 +44,7 @@ public class AcercaDe {
             PANTALLA_ACERCA_DE.setScene(escena);
             PANTALLA_ACERCA_DE.setTitle("Acerca de.");
 
-            /*Logica para permitir abrir de nuevo la ventana*/
+
             PANTALLA_ACERCA_DE.showingProperty().addListener((obs,odlValue,newValue) -> {
                 if(!newValue){
                     singleton = null;

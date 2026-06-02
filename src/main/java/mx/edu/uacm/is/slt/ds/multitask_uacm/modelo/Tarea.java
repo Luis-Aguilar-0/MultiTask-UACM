@@ -54,7 +54,7 @@ public class Tarea implements Ejecutable, Runnable {
         this.progreso = 0.0;
     }
 
-    // ─── Getters y Setters Adicionales de Progreso ───────────────────────────
+
     public double getProgreso() {
         return progreso;
     }
@@ -95,7 +95,7 @@ public class Tarea implements Ejecutable, Runnable {
         return estado;
     }
 
-    // Seteo seguro de estados notificando a la interfaz
+
     public void setEstado(String estado) {
         Platform.runLater(() -> this.estado = estado);
     }
@@ -150,7 +150,7 @@ public class Tarea implements Ejecutable, Runnable {
         }
     }
 
-    // ─── Ejecución Asíncrona con Hilos e Interfaz ─────────────────────────────
+
     public void ejecutar() {
         if (hilo != null && hilo.isAlive()) {
             return;
@@ -166,7 +166,7 @@ public class Tarea implements Ejecutable, Runnable {
     @Override
     public void run() {
         try {
-            // Simulación reactiva paso a paso de 0% a 100% de progreso
+
             while (progreso < 100.0 && corriendo) {
                 synchronized (bloqueo) {
                     while (pausada && corriendo) {
@@ -179,10 +179,10 @@ public class Tarea implements Ejecutable, Runnable {
                     break;
                 }
 
-                // Simula procesamiento del flujo
+
                 Thread.sleep(200);
 
-                // Modificación del progreso en zona segura de JavaFX
+
                 Platform.runLater(() -> progreso += 10.0);
                 System.out.println("[" + nombre + "] Progreso: " + progreso + "%");
             }
