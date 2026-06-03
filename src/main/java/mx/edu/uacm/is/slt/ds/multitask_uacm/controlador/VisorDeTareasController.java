@@ -47,22 +47,28 @@ public class VisorDeTareasController {
     private TableColumn<Tarea, String> tlb_tipo;
 
     @FXML
-    private TableColumn<Tarea, String> tlb_descripcion;
-
-    @FXML
     private TableColumn<Tarea, Void> tlb_accionTarea;
 
     @FXML
     private ImageView logoImageView;
 
+    @FXML
+    private Button btnNuevaTarea;
+
+    @FXML
+    private Button btnCerrar;
+
+    // Establece la operacion actual a visualizar
     public static void setOperacionActual(Operacion op) {
         operacionActual = op;
     }
 
+    // Obtiene la operacion actual
     public static Operacion getOperacionActual() {
         return operacionActual;
     }
 
+    // Inicializa el controlador
     @FXML
     public void initialize() {
         cargarLogo();
@@ -71,36 +77,47 @@ public class VisorDeTareasController {
         cargarDatos();
     }
 
+    // Carga el logo desde la carpeta de recursos
     private void cargarLogo() {
         String ruta = "/mx/edu/uacm/is/slt/ds/multitask_uacm/logo/logo.png";
         InputStream inputStream = getClass().getResourceAsStream(ruta);
         if (inputStream != null) {
             Image imagen = new Image(inputStream);
             logoImageView.setImage(imagen);
+        } else {
+            System.err.println("Error: No se encontro el logo en " + ruta);
         }
     }
 
+    // Configura las columnas de la tabla de tareas
     private void configurarColumnas() {
         tlc_nombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         tlb_tipo.setCellValueFactory(new PropertyValueFactory<>("tipoTarea"));
-        tlb_descripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
     }
 
+    // Configura los botones de accion para cada tarea
     private void configurarColumnaAcciones() {
         tlb_accionTarea.setCellFactory(param -> new TableCell<Tarea, Void>() {
             private final Button btnEditar = new Button("Editar");
             private final Button btnEliminar = new Button("Eliminar");
             private final Button btnInfo = new Button("Info");
-            private final HBox contenedor = new HBox(5, btnEditar, btnEliminar, btnInfo);
+            private final HBox contenedor = new HBox(8, btnEditar, btnEliminar, btnInfo);
 
             {
-                String estiloBoton = "-fx-background-color: #C3A495; -fx-font-family: 'Arial Black'; -fx-font-size: 10px; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 4 8;";
+                // Aplica la clase CSS a los botones
+                btnEditar.getStyleClass().add("button");
+                btnEliminar.getStyleClass().add("button");
+                btnInfo.getStyleClass().add("button");
+
+                // Estilo para que los botones se vean bien
+                String estiloBoton = "-fx-font-size: 12px; -fx-padding: 5 12; -fx-background-radius: 6; -fx-min-width: 70;";
                 btnEditar.setStyle(estiloBoton);
-                btnEliminar.setStyle("-fx-background-color: #D9534F; -fx-font-family: 'Arial Black'; -fx-font-size: 10px; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 4 8;");
+                btnEliminar.setStyle(estiloBoton);
                 btnInfo.setStyle(estiloBoton);
 
                 contenedor.setAlignment(Pos.CENTER);
 
+                // Accion del boton Editar
                 btnEditar.setOnAction(e -> {
                     Tarea tarea = getTableRow().getItem();
                     if (tarea != null) {
@@ -108,13 +125,27 @@ public class VisorDeTareasController {
                     }
                 });
 
+                // Accion del boton Eliminar
                 btnEliminar.setOnAction(e -> {
                     Tarea tarea = getTableRow().getItem();
                     if (tarea != null) {
-                        eliminarTarea(tarea);
+                        // Ventana de confirmacion
+                        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+                        confirmacion.setTitle("Confirmar");
+                        confirmacion.setHeaderText("Eliminar Tarea");
+                        confirmacion.setContentText("¿Desea eliminar la tarea: " + tarea.getNombre() + "?");
+
+                        if (confirmacion.showAndWait().get() == javafx.scene.control.ButtonType.OK) {
+                            operacionActual.getTareas().remove(tarea);
+                            tablaTareasVisor.refresh();
+                            hayCambios = true;
+                            GestorOperaciones.obtenerInstancia().notifyChanges();
+                            System.out.println("Tarea eliminada: " + tarea.getNombre());
+                        }
                     }
                 });
 
+                // Accion del boton Info
                 btnInfo.setOnAction(e -> {
                     Tarea tarea = getTableRow().getItem();
                     if (tarea != null) {
@@ -126,11 +157,17 @@ public class VisorDeTareasController {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                setGraphic(empty || getTableRow() == null || getTableRow().getItem() == null ? null : contenedor);
+                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(contenedor);
+                    setAlignment(Pos.CENTER);
+                }
             }
         });
     }
 
+    // Carga los datos de la operacion y sus tareas
     private void cargarDatos() {
         if (operacionActual != null) {
             txt_nombreOperacion.setText(operacionActual.getNombre());
@@ -141,11 +178,19 @@ public class VisorDeTareasController {
         }
     }
 
+    // Abre ventana para editar una tarea
     private void editarTarea(Tarea tarea) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/EditarTarea.fxml"));
-            Parent root = loader.load();
+            String rutaFXML = "/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/EditarTarea.fxml";
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
 
+            if (loader.getLocation() == null) {
+                System.err.println("Error: No se encuentra el archivo " + rutaFXML);
+                mostrarAlerta("Error", "No se encuentra el editor de tareas");
+                return;
+            }
+
+            Parent root = loader.load();
             EditarTareaController controller = loader.getController();
             controller.setTarea(tarea);
 
@@ -158,24 +203,11 @@ public class VisorDeTareasController {
 
             tablaTareasVisor.refresh();
             hayCambios = true;
+            GestorOperaciones.obtenerInstancia().notifyChanges();
 
         } catch (IOException e) {
             e.printStackTrace();
-            mostrarAlerta("Error", "No se pudo abrir el editor de tarea");
-        }
-    }
-
-    private void eliminarTarea(Tarea tarea) {
-        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmacion.setTitle("Confirmar");
-        confirmacion.setHeaderText(null);
-        confirmacion.setContentText("¿Desea eliminar la tarea: " + tarea.getNombre() + "?");
-
-        if (confirmacion.showAndWait().get() == javafx.scene.control.ButtonType.OK) {
-            operacionActual.getTareas().remove(tarea);
-            tablaTareasVisor.refresh();
-            hayCambios = true;
-            System.out.println("Tarea eliminada: " + tarea.getNombre());
+            mostrarAlerta("Error", "No se pudo abrir el editor de tarea: " + e.getMessage());
         }
     }
 
@@ -198,6 +230,7 @@ public class VisorDeTareasController {
         info.showAndWait();
     }
 
+    // Muestra una alerta de error
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alerta = new Alert(Alert.AlertType.ERROR);
         alerta.setTitle(titulo);
@@ -206,14 +239,32 @@ public class VisorDeTareasController {
         alerta.showAndWait();
     }
 
+    // Abre ventana para crear nueva tarea
     @FXML
     private void abrirNuevaTarea(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/NuevaTarea.fxml"));
+            String rutaFXML = "/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/NuevaTarea.fxml";
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
+
+            if (loader.getLocation() == null) {
+                System.err.println("Error: No se encontro el archivo " + rutaFXML);
+                mostrarAlerta("Error", "No se encontro el archivo NuevaTarea.fxml");
+                return;
+            }
+
             Parent root = loader.load();
 
-            NuevaTareaController controller = loader.getController();
-            controller.setOperacion(operacionActual);
+            Object controller = loader.getController();
+            System.out.println("Controlador cargado: " + controller.getClass().getName());
+
+            if (controller instanceof NuevaTareaController) {
+                NuevaTareaController nuevaTareaController = (NuevaTareaController) controller;
+                nuevaTareaController.setOperacion(operacionActual);
+            } else {
+                System.err.println("Error: El controlador no es de tipo NuevaTareaController");
+                mostrarAlerta("Error", "Error interno al cargar la ventana");
+                return;
+            }
 
             Stage stage = new Stage();
             stage.setTitle("Nueva Tarea");
@@ -224,13 +275,15 @@ public class VisorDeTareasController {
 
             tablaTareasVisor.refresh();
             hayCambios = true;
+            GestorOperaciones.obtenerInstancia().notifyChanges();
 
         } catch (IOException e) {
             e.printStackTrace();
-            mostrarAlerta("Error", "No se pudo abrir la ventana de nueva tarea");
+            mostrarAlerta("Error", "No se pudo abrir la ventana de nueva tarea: " + e.getMessage());
         }
     }
 
+    // Cierra el visor y notifica cambios si los hay
     @FXML
     private void cerrarVisor(ActionEvent event) {
         if (hayCambios && operacionActual != null) {

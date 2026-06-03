@@ -67,6 +67,31 @@ public class NuevaTareaController {
         this.operacionActual = operacion;
     }
     
+    // Valida que todos los campos esten llenos
+    private boolean validarCampos() {
+        if (txtNombreTarea.getText().trim().isEmpty()) {
+            mostrarAlerta("Error", "Debe llenar todos los campos");
+            return false;
+        }
+        
+        if (txtDescripcion.getText().trim().isEmpty()) {
+            mostrarAlerta("Error", "Debe llenar todos los campos");
+            return false;
+        }
+        
+        if (precondiciones.trim().isEmpty()) {
+            mostrarAlerta("Error", "Debe llenar todos los campos");
+            return false;
+        }
+        
+        if (postcondiciones.trim().isEmpty()) {
+            mostrarAlerta("Error", "Debe llenar todos los campos");
+            return false;
+        }
+        
+        return true;
+    }
+    
     @FXML
     public void abrirPrecondiciones() {
         try {
@@ -115,19 +140,17 @@ public class NuevaTareaController {
     
     @FXML
     public void guardarTarea() {
+        // Validar todos los campos
+        if (!validarCampos()) {
+            return;
+        }
+        
         String nombre = txtNombreTarea.getText().trim();
         String descripcion = txtDescripcion.getText().trim();
         String dependencias = txtDependencias.getText().trim();
         String tipo = comboTipoTarea.getValue();
         
-        if (nombre.isEmpty()) {
-            mostrarAlerta("Error", "El nombre de la tarea no puede estar vacio");
-            return;
-        }
-        
         Tarea nuevaTarea = new Tarea(nombre, descripcion);
-        
-        // Usar setTipoTarea
         nuevaTarea.setTipoTarea(tipo);
         
         // Agregar dependencias

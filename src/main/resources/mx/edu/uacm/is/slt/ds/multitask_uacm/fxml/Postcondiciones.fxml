@@ -2,63 +2,89 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="732.0" style="-fx-background-color: F2EDE6;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.PostcondicionesController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" 
+      prefHeight="550.0" prefWidth="750.0" 
+      style="-fx-background-color: #F2EDE6;" 
+      stylesheets="@../css/estilos.css"
+      xmlns="http://javafx.com/javafx/21" 
+      xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.PostcondicionesController">
+      
    <children>
-      <Pane prefHeight="83.0" prefWidth="732.0" style="-fx-background-color: #D9CCC5;">
+   
+      <!-- HEADER -->
+      <Pane prefHeight="90.0" prefWidth="750.0" 
+            style="-fx-background-color: #D9CCC5; -fx-border-width: 0 0 2 0; -fx-border-color: #C3A495;">
+         <effect>
+            <DropShadow color="#0000001a" height="10.0" radius="4.5" width="10.0" />
+         </effect>
          <children>
-            <ImageView fitHeight="66.0" fitWidth="173.0" layoutX="12.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../../../../../../../../../../Downloads/logo_UACM_sin_fondo.png" />
-               </image>
-            </ImageView>
-            <Label layoutX="269.0" layoutY="20.0" text="Postcondiciones">
+            <ImageView fx:id="logoImageView" fitHeight="65.0" fitWidth="140.0"
+                       layoutX="20.0" layoutY="12.0"
+                       pickOnBounds="true" preserveRatio="true" />
+            
+            <Label layoutX="290.0" layoutY="25.0" text="Postcondiciones" textFill="#2C1810">
                <font>
-                  <Font name="Arial Black" size="30.0" />
+                  <Font name="Arial Black" size="28.0" />
                </font>
             </Label>
          </children>
       </Pane>
-      <Pane layoutY="133.0" prefHeight="371.0" prefWidth="732.0" style="-fx-background-color: #D9CCC5;">
+
+      <!-- PANEL PRINCIPAL -->
+      <Pane layoutX="25.0" layoutY="110.0" prefHeight="380.0" prefWidth="700.0" 
+            style="-fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: #D9CCC5; -fx-border-width: 2;">
+         <effect>
+            <DropShadow color="#00000015" offsetX="2.0" offsetY="4.0" radius="12.0" />
+         </effect>
+         
          <children>
-            <Label layoutX="36.0" layoutY="33.0" prefHeight="27.0" prefWidth="108.0" text="Descripcion:">
+            
+            <!-- TITULO DEL PANEL -->
+            <Label layoutX="25.0" layoutY="20.0" text="Agregue las postcondiciones" textFill="#5C3D2E">
                <font>
-                  <Font name="Arial Black" size="14.0" />
+                  <Font name="Arial Black" size="16.0" />
                </font>
             </Label>
-            <TextArea layoutX="36.0" layoutY="73.0" prefHeight="213.0" prefWidth="653.0">
+            
+            <Separator layoutX="25.0" layoutY="55.0" prefWidth="650.0" />
+
+            <!-- CAMPO DE TEXTO -->
+            <Label layoutX="35.0" layoutY="80.0" text="Descripcion:" style="-fx-font-family: 'Arial Black'; -fx-font-size: 13px; -fx-text-fill: #5C3D2E;"/>
+            
+            <TextArea fx:id="txtAreaDescripcion" layoutX="35.0" layoutY="105.0" prefHeight="200.0" prefWidth="630.0"
+                      promptText="Escriba las postcondiciones (una por linea)..."
+                      style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-padding: 10; -fx-font-size: 13px;"
+                      wrapText="true"/>
+
+            <!-- BOTONES -->
+            <Button fx:id="btnGuardar" layoutX="250.0" layoutY="325.0" 
+                    mnemonicParsing="false" onAction="#guardar" 
+                    prefHeight="35.0" prefWidth="100.0" 
+                    styleClass="button" text="Guardar">
                <effect>
-                  <DropShadow />
-               </effect>
-            </TextArea>
-            <Button fx:id="btnGuardar" layoutX="36.0" layoutY="315.0" mnemonicParsing="false" style="-fx-background-color: #C3A495;" text="Guardar" onAction="#guardar" >
-               <font>
-                  <Font name="Arial Black" size="14.0" />
-               </font>
-               <effect>
-                  <DropShadow />
+                  <DropShadow color="#00000030" offsetX="0.0" offsetY="2.0" radius="4.0" />
                </effect>
             </Button>
-            <Button fx:id="btnCancelar" layoutX="601.0" layoutY="315.0" mnemonicParsing="false" style="-fx-background-color: #C3A495;" text="Cancelar" onAction="#cancelar" >
-               <font>
-                  <Font name="Arial Black" size="14.0" />
-               </font>
+            
+            <Button fx:id="btnCancelar" layoutX="370.0" layoutY="325.0" 
+                    mnemonicParsing="false" onAction="#cancelar" 
+                    prefHeight="35.0" prefWidth="100.0" 
+                    styleClass="button" text="Cancelar">
                <effect>
-                  <DropShadow />
+                  <DropShadow color="#00000030" offsetX="0.0" offsetY="2.0" radius="4.0" />
                </effect>
             </Button>
+            
          </children>
       </Pane>
-      <Label layoutX="11.0" layoutY="97.0" text="Agregue las postcondiciones:">
-         <font>
-            <Font name="Arial Black" size="14.0" />
-         </font>
-      </Label>
+      
    </children>
 </Pane>

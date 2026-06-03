@@ -12,17 +12,17 @@
 <?import javafx.scene.text.Font?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" 
-      prefHeight="580.0" prefWidth="750.0" 
+      prefHeight="620.0" prefWidth="800.0" 
       style="-fx-background-color: #F2EDE6;" 
       stylesheets="@../css/estilos.css"
       xmlns="http://javafx.com/javafx/21" 
       xmlns:fx="http://javafx.com/fxml/1" 
-      fx:controller="mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.NuevaTareaController">
+      fx:controller="mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.EditarTareaController">
       
    <children>
    
       <!-- HEADER -->
-      <Pane prefHeight="90.0" prefWidth="750.0" 
+      <Pane prefHeight="90.0" prefWidth="800.0" 
             style="-fx-background-color: #D9CCC5; -fx-border-width: 0 0 2 0; -fx-border-color: #C3A495;">
          <effect>
             <DropShadow color="#0000001a" height="10.0" radius="4.5" width="10.0" />
@@ -32,7 +32,7 @@
                        layoutX="20.0" layoutY="12.0"
                        pickOnBounds="true" preserveRatio="true" />
             
-            <Label layoutX="280.0" layoutY="25.0" text="Nueva Tarea" textFill="#2C1810">
+            <Label layoutX="300.0" layoutY="25.0" text="Editar Tarea" textFill="#2C1810">
                <font>
                   <Font name="Arial Black" size="28.0" />
                </font>
@@ -41,7 +41,7 @@
       </Pane>
 
       <!-- PANEL PRINCIPAL -->
-      <Pane layoutX="25.0" layoutY="110.0" prefHeight="410.0" prefWidth="700.0" 
+      <Pane layoutX="25.0" layoutY="110.0" prefHeight="450.0" prefWidth="750.0" 
             style="-fx-background-color: #FFFFFF; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: #D9CCC5; -fx-border-width: 2;">
          <effect>
             <DropShadow color="#00000015" offsetX="2.0" offsetY="4.0" radius="12.0" />
@@ -56,58 +56,57 @@
                </font>
             </Label>
             
-            <Separator layoutX="25.0" layoutY="55.0" prefWidth="650.0" />
+            <Separator layoutX="25.0" layoutY="55.0" prefWidth="700.0" />
 
             <!-- FILA 1: Nombre y Tipo -->
             <Label layoutX="35.0" layoutY="80.0" text="Nombre:" style="-fx-font-family: 'Arial Black'; -fx-font-size: 13px; -fx-text-fill: #5C3D2E;"/>
-            <TextField fx:id="txtNombreTarea" layoutX="35.0" layoutY="105.0" prefHeight="35.0" prefWidth="320.0" 
+            <TextField fx:id="txtNombre" layoutX="35.0" layoutY="105.0" prefHeight="35.0" prefWidth="320.0" 
                        promptText="Nombre de la tarea"
                        style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-padding: 6;" />
 
             <Label layoutX="390.0" layoutY="80.0" text="Tipo:" style="-fx-font-family: 'Arial Black'; -fx-font-size: 13px; -fx-text-fill: #5C3D2E;"/>
-            <ComboBox fx:id="comboTipoTarea" layoutX="390.0" layoutY="105.0" prefHeight="35.0" prefWidth="180.0" 
+            <ComboBox fx:id="cmbTipoTarea" layoutX="390.0" layoutY="105.0" prefHeight="35.0" prefWidth="180.0" 
                       style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-padding: 4;"/>
 
             <!-- Campo Descripcion -->
             <Label layoutX="35.0" layoutY="160.0" text="Descripcion:" style="-fx-font-family: 'Arial Black'; -fx-font-size: 13px; -fx-text-fill: #5C3D2E;"/>
-            <TextArea fx:id="txtDescripcion" layoutX="35.0" layoutY="185.0" prefWidth="630.0" prefHeight="70.0"
+            <TextArea fx:id="txtDescripcion" layoutX="35.0" layoutY="185.0" prefWidth="680.0" prefHeight="80.0"
                       promptText="Descripcion detallada de la tarea..."
                       style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-padding: 8;"
                       wrapText="true"/>
 
-            <!-- Campo Dependencias -->
-            <Label layoutX="35.0" layoutY="275.0" text="Dependencias:" style="-fx-font-family: 'Arial Black'; -fx-font-size: 13px; -fx-text-fill: #5C3D2E;"/>
-            <TextField fx:id="txtDependencias" layoutX="35.0" layoutY="300.0" prefWidth="630.0" 
-                       promptText="Escriba las dependencias"
-                       style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-padding: 6;" />
+            <!-- SEPARADOR -->
+            <Separator layoutX="25.0" layoutY="285.0" prefWidth="700.0" />
 
-            <!-- Botones Precondiciones y Postcondiciones -->
-            <Button fx:id="btnPrecondiciones" layoutX="35.0" layoutY="345.0" 
-                    mnemonicParsing="false" onAction="#abrirPrecondiciones" 
-                    prefHeight="32.0" prefWidth="150.0" 
-                    styleClass="button" text="Precondiciones"/>
-            
-            <Button fx:id="btnPostcondiciones" layoutX="200.0" layoutY="345.0" 
-                    mnemonicParsing="false" onAction="#abrirPostcondiciones" 
-                    prefHeight="32.0" prefWidth="150.0" 
-                    styleClass="button" text="Postcondiciones"/>
-                    
+            <!-- SECCION PRECONDICIONES Y POSTCONDICIONES -->
+            <Label layoutX="35.0" layoutY="305.0" text="Precondiciones:" style="-fx-font-family: 'Arial Black'; -fx-font-size: 13px; -fx-text-fill: #5C3D2E;"/>
+            <TextArea fx:id="txtPrecondiciones" layoutX="35.0" layoutY="330.0" prefWidth="330.0" prefHeight="80.0"
+                      promptText="Escriba las precondiciones..."
+                      style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-padding: 6;"
+                      wrapText="true"/>
+
+            <Label layoutX="395.0" layoutY="305.0" text="Postcondiciones:" style="-fx-font-family: 'Arial Black'; -fx-font-size: 13px; -fx-text-fill: #5C3D2E;"/>
+            <TextArea fx:id="txtPostcondiciones" layoutX="395.0" layoutY="330.0" prefWidth="330.0" prefHeight="80.0"
+                      promptText="Escriba las postcondiciones..."
+                      style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-padding: 6;"
+                      wrapText="true"/>
+
          </children>
       </Pane>
 
       <!-- BOTONES -->
-      <Button fx:id="btnGuardarTarea" layoutX="250.0" layoutY="535.0" 
-              mnemonicParsing="false" onAction="#guardarTarea" 
-              prefHeight="35.0" prefWidth="120.0" 
-              styleClass="button" text="Guardar Tarea">
+      <Button fx:id="btnGuardar" layoutX="290.0" layoutY="575.0" 
+              mnemonicParsing="false" onAction="#guardar" 
+              prefHeight="35.0" prefWidth="100.0" 
+              styleClass="button" text="Guardar">
          <effect>
             <DropShadow color="#00000030" offsetX="0.0" offsetY="2.0" radius="4.0" />
          </effect>
       </Button>
       
-      <Button fx:id="btnCancelar" layoutX="390.0" layoutY="535.0" 
+      <Button fx:id="btnCancelar" layoutX="410.0" layoutY="575.0" 
               mnemonicParsing="false" onAction="#cancelar" 
-              prefHeight="35.0" prefWidth="120.0" 
+              prefHeight="35.0" prefWidth="100.0" 
               styleClass="button" text="Cancelar">
          <effect>
             <DropShadow color="#00000030" offsetX="0.0" offsetY="2.0" radius="4.0" />

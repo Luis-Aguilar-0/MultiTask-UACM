@@ -40,7 +40,10 @@ public class PantallaPrincipalController {
     private TableColumn<Operacion, String> tlb_operaciones;
     @FXML
     private ImageView logoImageView;
+    @FXML
+    private Button btn_nuevaOperacion;
 
+    // Inicializa el controlador
     @FXML
     public void initialize() {
         cargarLogo();
@@ -49,14 +52,18 @@ public class PantallaPrincipalController {
         cargarDatos();
     }
 
+    // Carga el logo desde la carpeta de recursos
     private void cargarLogo() {
         String ruta = "/mx/edu/uacm/is/slt/ds/multitask_uacm/logo/logo.png";
         InputStream inputStream = getClass().getResourceAsStream(ruta);
         if (inputStream != null) {
             logoImageView.setImage(new Image(inputStream));
+        } else {
+            System.err.println("Error: No se encontro el logo en " + ruta);
         }
     }
 
+    // Configura las columnas de la tabla
     private void configurarColumnas() {
         tlb_operaciones.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         tlb_tareas.setCellValueFactory(cellData -> {
@@ -71,21 +78,24 @@ public class PantallaPrincipalController {
         tlb_estado.setStyle("-fx-alignment: CENTER;");
     }
 
+    // Configura los botones de accion (Abrir, Editar, Eliminar, Info)
     private void configurarBotonAccion() {
         tlb_accion.setCellFactory(param -> new TableCell<Operacion, String>() {
             private final Button btnAbrir = new Button("Abrir");
             private final Button btnEditar = new Button("Editar");
-            private final Button btnEliminar = new Button("Elim");
+            private final Button btnEliminar = new Button("Eliminar");
             private final Button btnInfo = new Button("Info");
             private final HBox contenedor = new HBox(6, btnAbrir, btnEditar, btnEliminar, btnInfo);
 
             {
+                // Aplica la clase CSS a todos los botones (mismo estilo)
                 btnAbrir.getStyleClass().add("button");
                 btnEditar.getStyleClass().add("button");
                 btnEliminar.getStyleClass().add("button");
                 btnInfo.getStyleClass().add("button");
 
-                String estilo = "-fx-font-size: 11px; -fx-padding: 4 6; -fx-background-radius: 6; -fx-pref-width: 55;";
+                // Estilo inline para tamanos mas pequenos
+                String estilo = "-fx-font-size: 11px; -fx-padding: 4 6; -fx-background-radius: 6; -fx-pref-width: 65;";
                 btnAbrir.setStyle(estilo);
                 btnEditar.setStyle(estilo);
                 btnEliminar.setStyle(estilo);
@@ -93,6 +103,7 @@ public class PantallaPrincipalController {
 
                 contenedor.setAlignment(Pos.CENTER);
 
+                // Accion del boton Abrir
                 btnAbrir.setOnAction(e -> {
                     Operacion op = getTableRow().getItem();
                     if (op != null) {
@@ -101,6 +112,7 @@ public class PantallaPrincipalController {
                     }
                 });
 
+                // Accion del boton Editar
                 btnEditar.setOnAction(e -> {
                     Operacion op = getTableRow().getItem();
                     if (op != null) {
@@ -108,13 +120,26 @@ public class PantallaPrincipalController {
                     }
                 });
 
+                // Accion del boton Eliminar
                 btnEliminar.setOnAction(e -> {
                     Operacion op = getTableRow().getItem();
                     if (op != null) {
-                        gestor.getOperaciones().remove(op);
+                        // Ventana de confirmacion
+                        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+                        confirmacion.setTitle("Confirmar");
+                        confirmacion.setHeaderText("Eliminar Operacion");
+                        confirmacion.setContentText("¿Desea eliminar la operacion: " + op.getNombre() + "?");
+
+                        if (confirmacion.showAndWait().get() == javafx.scene.control.ButtonType.OK) {
+                            gestor.getOperaciones().remove(op);
+                            gestor.notifyChanges();
+                            tlbV_tablaViewPrincipal.refresh();
+                            System.out.println("Operacion eliminada: " + op.getNombre());
+                        }
                     }
                 });
 
+                // Accion del boton Info
                 btnInfo.setOnAction(e -> {
                     Operacion op = getTableRow().getItem();
                     if (op != null) {
@@ -130,35 +155,41 @@ public class PantallaPrincipalController {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-                setGraphic(empty || getTableRow() == null || getTableRow().getItem() == null ? null : contenedor);
-                if (!empty) {
+                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(contenedor);
                     setAlignment(Pos.CENTER);
                 }
             }
         });
     }
 
+    // Carga los datos de las operaciones en la tabla
     private void cargarDatos() {
         ObservableList<Operacion> operaciones = FXCollections.observableArrayList(gestor.getOperaciones());
         tlbV_tablaViewPrincipal.setItems(operaciones);
 
+        // Listener para actualizar la tabla cuando haya cambios
         gestor.addListener(() -> {
             javafx.application.Platform.runLater(() -> {
                 ObservableList<Operacion> nuevasOperaciones = FXCollections.observableArrayList(gestor.getOperaciones());
                 tlbV_tablaViewPrincipal.setItems(nuevasOperaciones);
+                tlbV_tablaViewPrincipal.refresh();
                 System.out.println("Lista de operaciones actualizada");
             });
         });
     }
 
+    // Abre la ventana para crear nueva operacion
     @FXML
     public void onButtonNuevaOperacion() {
         NuevaOperacion.obtenerInstancia(new Stage()).mostrar();
     }
 
+    // Abre la ventana Acerca De
     @FXML
     public void abrirAcercaDe() {
         AcercaDe.obtenerInstancia(new Stage()).mostrar();
     }
-    
 }
