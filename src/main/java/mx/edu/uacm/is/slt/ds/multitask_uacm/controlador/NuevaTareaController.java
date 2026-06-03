@@ -25,8 +25,11 @@ public class NuevaTareaController {
     @FXML private TextField txtDependencias;
     @FXML private ComboBox<String> comboTipoTarea;
 
-
     private Operacion operacionActual;
+
+
+    private Stage stagePrecondiciones = null;
+    private Stage stagePostcondiciones = null;
 
     @FXML
     public void initialize() {
@@ -38,7 +41,6 @@ public class NuevaTareaController {
         comboTipoTarea.getSelectionModel().selectFirst();
     }
 
-    /** Llamar desde VisorDeTareasController antes de mostrar esta pantalla */
     public void setOperacion(Operacion op) {
         this.operacionActual = op;
     }
@@ -50,19 +52,16 @@ public class NuevaTareaController {
         String dependencia = txtDependencias.getText().trim();
         String tipo = comboTipoTarea.getValue();
 
-
         if (nombre.isEmpty()) {
             mostrarAlerta(Alert.AlertType.WARNING, "El nombre de la tarea no puede estar vacío.");
             return;
         }
-
 
         Tarea tarea = new Tarea(nombre, descripcion);
         tarea.setTipoTarea(tipo);
         if (!dependencia.isEmpty()) {
             tarea.agregarDependencia(dependencia);
         }
-
 
         if (operacionActual != null) {
             operacionActual.agregarTarea(tarea);
@@ -75,15 +74,20 @@ public class NuevaTareaController {
 
     @FXML
     private void abrirPrecondiciones(ActionEvent event) {
+
+        if (stagePrecondiciones != null && stagePrecondiciones.isShowing()) {
+            stagePrecondiciones.toFront();
+            return;
+        }
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/Precondiciones.fxml")
             );
             Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Precondiciones");
-            stage.setScene(new Scene(root));
-            stage.show();
+            stagePrecondiciones = new Stage();
+            stagePrecondiciones.setTitle("Precondiciones");
+            stagePrecondiciones.setScene(new Scene(root));
+            stagePrecondiciones.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -91,15 +95,20 @@ public class NuevaTareaController {
 
     @FXML
     private void abrirPostcondiciones(ActionEvent event) {
+
+        if (stagePostcondiciones != null && stagePostcondiciones.isShowing()) {
+            stagePostcondiciones.toFront();
+            return;
+        }
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/Postcondiciones.fxml")
             );
             Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Postcondiciones");
-            stage.setScene(new Scene(root));
-            stage.show();
+            stagePostcondiciones = new Stage();
+            stagePostcondiciones.setTitle("Postcondiciones");
+            stagePostcondiciones.setScene(new Scene(root));
+            stagePostcondiciones.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -118,15 +127,12 @@ public class NuevaTareaController {
         volverAlVisor(event);
     }
 
-
-
     private void volverAlVisor(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/VisorDeTareas.fxml")
             );
             Parent root = loader.load();
-
 
             VisorDeTareasController controlador = loader.getController();
             controlador.setOperacion(operacionActual);

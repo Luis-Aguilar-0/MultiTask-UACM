@@ -24,6 +24,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.Estado;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.GestorOperaciones;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.Operacion;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.Tarea;
@@ -64,7 +65,7 @@ public class VisorDeTareasController implements Initializable {
         tableView.getSelectionModel().selectedItemProperty().addListener(
                 (obs, anterior, actual) -> {
                     if (actual != null) {
-                        txt_estado.setText(actual.getEstado());
+                        txt_estado.setText(actual.getEstado() != null ? actual.getEstado() : "");
                     }
                 }
         );
@@ -78,18 +79,21 @@ public class VisorDeTareasController implements Initializable {
     private void cargarDatosOperacion() {
         if (operacionActual == null) return;
         txt_nombreOperacion.setText(operacionActual.getNombre());
-        txt_estado.setText(operacionActual.getEstado().toString());
-
-
+        txt_estado.setText(estadoTexto(operacionActual.getEstado()));
         ObservableList<Tarea> tareas =
                 FXCollections.observableArrayList(operacionActual.getTareas());
         tableView.setItems(tareas);
     }
 
-    private void actualizarEstado() {
-        if (operacionActual != null) {
-            txt_estado.setText(operacionActual.getEstado().toString());
-            tableView.refresh();
+
+    private String estadoTexto(Estado estado) {
+        if (estado == null) return "";
+        switch (estado) {
+            case EN_EJECUCION:  return "En ejecución";
+            case PAUSADO:       return "Pausada";
+            case DETENIDA:      return "Detenida";
+            case NO_EJECUTADA:  return "No ejecutada";
+            default:            return estado.toString();
         }
     }
 
@@ -97,34 +101,39 @@ public class VisorDeTareasController implements Initializable {
     private void pausarOperacion(ActionEvent event) {
         if (operacionActual == null) { mostrarAlerta("No hay operación cargada."); return; }
         operacionActual.pausar();
-        actualizarEstado();
-        mostrarInfo("Pausada", "La operación '" + operacionActual.getNombre() + "' fue pausada.");
+        txt_estado.setText(estadoTexto(operacionActual.getEstado()));
+        tableView.refresh();
+        mostrarInfo("Pausada", "La operación fue pausada.");
     }
 
     @FXML
     private void detenerOperacion(ActionEvent event) {
         if (operacionActual == null) { mostrarAlerta("No hay operación cargada."); return; }
         operacionActual.detener();
-        actualizarEstado();
-        mostrarInfo("Detenida", "La operación '" + operacionActual.getNombre() + "' fue detenida.");
+        txt_estado.setText(estadoTexto(operacionActual.getEstado()));
+        tableView.refresh();
+        mostrarInfo("Detenida", "La operación fue detenida.");
     }
 
     @FXML
     private void reanudarOperacion(ActionEvent event) {
         if (operacionActual == null) { mostrarAlerta("No hay operación cargada."); return; }
         operacionActual.reanudar();
-        actualizarEstado();
-        mostrarInfo("Reanudada", "La operación '" + operacionActual.getNombre() + "' fue reanudada.");
+        txt_estado.setText(estadoTexto(operacionActual.getEstado()));
+        tableView.refresh();
+        mostrarInfo("Reanudada", "La operación fue reanudada.");
     }
 
     @FXML
     private void volver(ActionEvent event) {
-        cambiarVista(event, "/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/hello-view.fxml", "MultiTask UACM");
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
     }
 
     @FXML
     private void cancelar(ActionEvent event) {
-        cambiarVista(event, "/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/hello-view.fxml", "MultiTask UACM");
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
     }
 
     @FXML
@@ -138,26 +147,12 @@ public class VisorDeTareasController implements Initializable {
             NuevaTareaController controlador = loader.getController();
             controlador.setOperacion(operacionActual);
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Nueva Tarea");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    private void cambiarVista(ActionEvent event, String ruta, String titulo) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(ruta));
-            Parent root = loader.load();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle(titulo);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            mostrarAlerta("No se pudo cargar la vista: " + ruta);
         }
     }
 
