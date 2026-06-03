@@ -120,11 +120,14 @@ public class NuevaTareaController {
         txtDescripcion.clear();
         txtDependencias.clear();
         comboTipoTarea.getSelectionModel().selectFirst();
+        volver(event);
     }
 
     @FXML
     private void volver(ActionEvent event) {
-        volverAlVisor(event);
+        Stage ecena = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        ecena.close();
+        //volverAlVisor(event);
     }
 
     private void volverAlVisor(ActionEvent event) {

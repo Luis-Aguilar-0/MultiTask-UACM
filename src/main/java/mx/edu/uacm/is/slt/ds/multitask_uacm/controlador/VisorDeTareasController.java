@@ -31,6 +31,7 @@ import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.Tarea;
 
 public class VisorDeTareasController implements Initializable {
 
+    private Stage nuevaTarea = null; //variable para evitar que se creen multiples stages de NuevaTarea
     @FXML private Button btnNuevaTarea;
     @FXML private Button btn_cancelar;
     @FXML private Button btn_PausarOperacion;
@@ -138,6 +139,11 @@ public class VisorDeTareasController implements Initializable {
 
     @FXML
     private void abrirNuevaTarea(ActionEvent event) {
+        //checamos si ya esta creada la intrefaz NuevaTarea
+        if(nuevaTarea != null && nuevaTarea.isShowing()){
+            nuevaTarea.toFront();
+            return;
+        }
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/NuevaTarea.fxml")
@@ -147,10 +153,10 @@ public class VisorDeTareasController implements Initializable {
             NuevaTareaController controlador = loader.getController();
             controlador.setOperacion(operacionActual);
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Nueva Tarea");
-            stage.show();
+            nuevaTarea = new Stage();
+            nuevaTarea.setScene(new Scene(root));
+            nuevaTarea.setTitle("Nueva Tarea");
+            nuevaTarea.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
