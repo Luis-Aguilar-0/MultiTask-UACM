@@ -15,10 +15,21 @@ public class VisorEditorTareas {
     private VisorEditorTareas() {}
 
     public static VisorEditorTareas obtenerInstancia(Stage pantalla, Operacion operacion) {
+        if (singleton == null) {
+            singleton = new VisorEditorTareas();
+            singleton.stage = pantalla;
+            singleton.cargarVista(operacion);
 
-        singleton = new VisorEditorTareas();
-        singleton.stage = pantalla;
-        singleton.cargarVista(operacion);
+            // Agregamos el listener para destruir el singleton cuando el usuario cierre la ventana
+            singleton.stage.showingProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue) {
+                    singleton = null;
+                }
+            });
+        } else {
+            // Si la ventana ya está abierta, evitamos crear una nueva y la traemos al frente
+            singleton.stage.toFront();
+        }
         return singleton;
     }
 

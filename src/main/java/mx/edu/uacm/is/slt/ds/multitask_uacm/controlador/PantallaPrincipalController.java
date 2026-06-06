@@ -66,14 +66,15 @@ public class PantallaPrincipalController {
             {
                 btnAbrirVer.setOnAction(event -> {
                     operacionSeleccionada = getTableView().getItems().get(getIndex());
+
+                    // Creamos el stage, pero el Singleton decidirá si lo usa o lo desecha
                     Stage visorStage = new Stage();
-
-
                     visorStage.setOnHidden(e -> tlbV_tablaViewPrincipal.refresh());
 
                     VisorEditorTareas visorEditorTareas = VisorEditorTareas.obtenerInstancia(visorStage, operacionSeleccionada);
                     visorEditorTareas.mostrar();
-                    System.out.println("Consola: Abriendo operación -> " + operacionSeleccionada.getNombre());
+
+                    System.out.println("Consola: Abriendo/Enfocando operación -> " + operacionSeleccionada.getNombre());
                 });
             }
 
