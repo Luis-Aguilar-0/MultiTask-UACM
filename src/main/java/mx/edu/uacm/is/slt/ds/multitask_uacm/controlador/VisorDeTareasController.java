@@ -79,6 +79,12 @@ public class VisorDeTareasController implements Initializable {
         txt_estado.setText(estadoTexto(operacionActual.getEstado()));
         ObservableList<Tarea> tareas = (ObservableList<Tarea>) operacionActual.getTareas();
         tableView.setItems(tareas);
+
+        if(operacionActual.getEstado() == Estado.NO_EJECUTADA){
+            btn_cancelar.setText("Iniciar operacion");
+        }else{
+            btn_PausarOperacion.setText("Pausar operacion");
+        }
     }
 
 
@@ -96,10 +102,31 @@ public class VisorDeTareasController implements Initializable {
     @FXML
     private void pausarOperacion(ActionEvent event) {
         if (operacionActual == null) { mostrarAlerta("No hay operación cargada."); return; }
-        operacionActual.pausar();
+
+        Estado estadoActual = operacionActual.getEstado();
+
+        //checamos si la operacion no esta en ejecucion o esta recien creada
+        if(estadoActual == Estado.NO_EJECUTADA){
+            //checamos si la opearcion tiene tareas
+            if(operacionActual.getTareas().isEmpty()){
+                mostrarAlerta("La opearcion no tiene tareas, Agrege almenos una tarea para ejecutar la opearcion");
+                return;
+            }
+            //ejecutamos la operacion si pasa la validacion
+            operacionActual.ejecutar();
+            btn_PausarOperacion.setText("Pausar Operacion");
+            mostrarInfo("Iniciada", "La Operacion ha comenzado");
+
+        }else if(estadoActual == Estado.EN_EJECUCION){
+            operacionActual.pausar();
+            mostrarInfo("Pausada", "La operacion fue pausada");
+        }else{
+            mostrarAlerta("La operacion no se puede iniciar ni pausar en su estado actual " + estadoTexto(estadoActual)  );
+        }
+
         txt_estado.setText(estadoTexto(operacionActual.getEstado()));
         tableView.refresh();
-        mostrarInfo("Pausada", "La operación fue pausada.");
+
     }
 
     @FXML

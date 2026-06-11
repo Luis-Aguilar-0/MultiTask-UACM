@@ -40,7 +40,7 @@
       </Label>
       <TextField fx:id="txt_estado" layoutX="581.0" layoutY="109.0" />
 
-      <Button fx:id="btn_PausarOperacion" layoutX="45.0" layoutY="159.0" mnemonicParsing="false" onAction="#pausarOperacion" prefHeight="30.0" prefWidth="175.0" text="Pausar operación">
+      <Button fx:id="btn_PausarOperacion" layoutX="45.0" layoutY="159.0" mnemonicParsing="false" onAction="#pausarOperacion" prefHeight="30.0" prefWidth="175.0" text="Inicial Operacion">
          <effect><DropShadow /></effect>
          <font><Font name="Arial Black" size="14.0" /></font>
       </Button>
