@@ -22,7 +22,7 @@ public class VisorEditorOperacion {
     private void cargaVista(){
         try {
 
-            String fxmlRuta = "/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/vistaEditorOperaciones.fxml";
+            String fxmlRuta = "/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/EditordeOperaciones.fxml";
 
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource(fxmlRuta));

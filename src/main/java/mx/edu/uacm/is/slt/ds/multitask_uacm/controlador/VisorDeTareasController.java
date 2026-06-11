@@ -17,11 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.Estado;
@@ -55,8 +51,8 @@ public class VisorDeTareasController implements Initializable {
         gestor = GestorOperaciones.obtenerInstancia();
 
         tlc_nombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        tlb_descripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
-        tlb_acciones.setCellValueFactory(new PropertyValueFactory<>("estado"));
+        tlb_descripcion.setCellValueFactory(new PropertyValueFactory<>("estado"));
+        //tlb_acciones.setCellValueFactory(new PropertyValueFactory<>("estado"));
 
         if (!gestor.getOperaciones().isEmpty()) {
             operacionActual = gestor.obtenerOperacion(0);
@@ -81,8 +77,7 @@ public class VisorDeTareasController implements Initializable {
         if (operacionActual == null) return;
         txt_nombreOperacion.setText(operacionActual.getNombre());
         txt_estado.setText(estadoTexto(operacionActual.getEstado()));
-        ObservableList<Tarea> tareas =
-                FXCollections.observableArrayList(operacionActual.getTareas());
+        ObservableList<Tarea> tareas = (ObservableList<Tarea>) operacionActual.getTareas();
         tableView.setItems(tareas);
     }
 

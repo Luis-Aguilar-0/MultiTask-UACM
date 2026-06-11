@@ -66,7 +66,7 @@ public class NuevaTareaController {
         if (operacionActual != null) {
             operacionActual.agregarTarea(tarea);
             mostrarAlerta(Alert.AlertType.INFORMATION, "Tarea '" + nombre + "' guardada correctamente.");
-            volverAlVisor(event);
+            volver(event);
         } else {
             mostrarAlerta(Alert.AlertType.WARNING, "No hay operación seleccionada. No se pudo guardar la tarea.");
         }

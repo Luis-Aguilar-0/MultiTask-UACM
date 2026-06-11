@@ -1,5 +1,7 @@
 package mx.edu.uacm.is.slt.ds.multitask_uacm.controlador;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -37,7 +39,11 @@ public class PantallaPrincipalController {
     @FXML
     public void initialize() {
         tlb_operaciones.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        tlb_tareas.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+        tlb_tareas.setCellValueFactory(cellData ->{
+            Operacion operacion = cellData.getValue();
+            int numTareas = operacion.getTareas().size();
+            return new SimpleStringProperty(numTareas + " tareas");
+        });
 
 
         tlb_estado.setCellValueFactory(new PropertyValueFactory<>("estado"));
