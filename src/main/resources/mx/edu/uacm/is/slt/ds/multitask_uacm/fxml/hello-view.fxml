@@ -8,7 +8,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="root-background" stylesheets="@../css/estilos.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.PantallaPrincipalController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="root-background" stylesheets="@../css/estilos.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.PantallaPrincipalController">
    <children>
       <TableView fx:id="tlbV_tablaViewPrincipal" layoutX="27.0" layoutY="185.0" prefHeight="341.0" prefWidth="845.0" styleClass="tabla-principal">
         <columns>
@@ -24,16 +24,15 @@
 
       <Button layoutX="375.0" layoutY="110.0" mnemonicParsing="false" onAction="#onButtonVistaEditorOperacion" prefHeight="43.0" prefWidth="150.0" styleClass="button" text="Editar" />
 
-      <Button fx:id="btn_nuevaOperacion" layoutX="722.0" layoutY="110.0" mnemonicParsing="false" onAction="#onButtonNuevaOperacion" prefHeight="43.0" prefWidth="150.0" styleClass="button" text="+Nueva operación" />
+      <Button fx:id="btn_nuevaOperacion" layoutX="722.0" layoutY="110.0" mnemonicParsing="false" onAction="#onButtonNuevaOperacion" prefHeight="43.0" prefWidth="150.0" styleClass="button" text="+Nueva operacion" />
 
       <Pane prefHeight="88.0" prefWidth="900.0" styleClass="root-pane">
          <children>
             <ImageView fitHeight="70.0" fitWidth="150.0" layoutX="14.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../css/logo_UACM_sin_fondo.png" />
-               </image>
+                <Image url="@../css/logo_UACM_sin_fondo.png" />
             </ImageView>
-            <Label layoutX="340.0" layoutY="26.0" styleClass="label" text="Multi Task - UACM" />
+            <Label layoutX="300.0" layoutY="15.0" prefWidth="300.0" styleClass="titulo-principal" text="Multi Task - UACM" />
+            <Label layoutX="300.0" layoutY="52.0" prefWidth="300.0" styleClass="subtitulo-principal" text="Sistema de Gestion y Control de Tareas de la UACM" />
          </children>
       </Pane>
 

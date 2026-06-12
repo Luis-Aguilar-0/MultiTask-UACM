@@ -1,17 +1,17 @@
 /* CONTROL DE CONTENEDORES */
 .root-pane {
-    -fx-background-color: #D9CCC5; /* Fondo del contenedor base */
+    -fx-background-color: #D9CCC5;
 }
 
 .root-background {
-    -fx-background-color: #F2EDE6; /* Fondo secundario de la escena */
+    -fx-background-color: #F2EDE6;
 }
 
 /* COMPONENTES DE TEXTO Y ENTRADAS */
 .label {
     -fx-font-family: "Arial";
     -fx-font-size: 14px;
-    -fx-text-fill: #333333; /* Color de fuente por defecto */
+    -fx-text-fill: #333333;
 }
 
 .text-field, .text-area {
@@ -34,18 +34,18 @@
     -fx-font-size: 13px;
     -fx-text-fill: white;
     -fx-cursor: hand;
-    -fx-background-radius: 8; /* Redondeo de esquinas */
+    -fx-background-radius: 8;
 }
 
 .button:hover {
-    -fx-background-color: #B39282; /* Cambio de tono al pasar cursor */
+    -fx-background-color: #B39282;
 }
 
 .button:pressed {
-    -fx-background-color: #A38170; /* Cambio de tono al presionar click */
+    -fx-background-color: #A38170;
 }
 
-/* COMPONENTES TABLEVIEW (REJILLA PRINCIPAL) */
+/* COMPONENTES TABLEVIEW */
 .table-view.tabla-principal {
     -fx-background-color: #f7f1eb;
     -fx-background-insets: 0;
@@ -55,7 +55,7 @@
 }
 
 .table-view.tabla-principal .column-header-background {
-    -fx-background-color: linear-gradient(to bottom, #d9ccc5, #cbb5aa); /* Degradado del encabezado */
+    -fx-background-color: linear-gradient(to bottom, #d9ccc5, #cbb5aa);
     -fx-background-radius: 10 10 0 0;
 }
 
@@ -79,11 +79,11 @@
 
 .table-row-cell:filled:selected,
 .table-row-cell:filled:selected:hover {
-    -fx-background-color: #e6d3c8; /* Color al seleccionar registro */
+    -fx-background-color: #e6d3c8;
 }
 
 .table-row-cell:odd {
-    -fx-background-color: #fcf8f5; /* Alternancia de color en filas impares */
+    -fx-background-color: #fcf8f5;
 }
 
 .table-cell {
@@ -103,5 +103,33 @@
 
 .contenedor-acciones-celda {
     -fx-alignment: center;
-    -fx-spacing: 6; /* Espaciado horizontal entre elementos de la celda */
+    -fx-spacing: 6;
+}
+
+/* ESTILO PARA EL TITULO PRINCIPAL DE LA VENTANA */
+.titulo-principal {
+    -fx-font-family: "Arial Black";
+    -fx-font-size: 26px;
+    -fx-text-fill: #4B2E24;
+}
+
+/* ESTILO PARA EL SUBTITULO */
+.subtitulo-principal {
+    -fx-font-family: "Arial";
+    -fx-font-size: 12px;
+    -fx-text-fill: #4B2E24;
+    -fx-font-weight: normal;
+}
+
+.titulo-principal {
+    -fx-font-family: "Arial Black";
+    -fx-font-size: 24px;
+    -fx-text-fill: #4B2E24;
+}
+
+.subtitulo-principal {
+    -fx-font-family: "Arial";
+    -fx-font-size: 12px;
+    -fx-text-fill: #4B2E24;
+    -fx-font-weight: normal;
 }

@@ -7,16 +7,15 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="732.0" styleClass="root-background" stylesheets="@../css/estilos.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.PostcondicionesController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="732.0" styleClass="root-background" stylesheets="@../css/estilos.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.PostcondicionesController">
    <children>
       <Pane prefHeight="83.0" prefWidth="732.0" styleClass="root-pane">
          <children>
             <ImageView fitHeight="70.0" fitWidth="150.0" layoutX="12.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../css/logo_UACM_sin_fondo.png" />
-               </image>
+                <Image url="@../css/logo_UACM_sin_fondo.png" />
             </ImageView>
-            <Label layoutX="269.0" layoutY="20.0" styleClass="label" text="Postcondiciones" />
+            <Label layoutX="216.0" layoutY="15.0" prefWidth="300.0" styleClass="titulo-principal" text="Postcondiciones" />
+            <Label layoutX="216.0" layoutY="55.0" prefWidth="300.0" styleClass="subtitulo-principal" text="Sistema de Gestion y Control de Tareas de la UACM" />
          </children>
       </Pane>
       <Pane layoutY="133.0" prefHeight="371.0" prefWidth="732.0" styleClass="root-pane">

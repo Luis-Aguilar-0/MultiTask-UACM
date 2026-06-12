@@ -9,30 +9,26 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="899.0" styleClass="root-background" stylesheets="@../css/estilos.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.NuevaOperacion">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="899.0" styleClass="root-background" stylesheets="@../css/estilos.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.NuevaOperacion">
    <children>
-      <TextArea fx:id="txtArea_descripcion" layoutX="437.0" layoutY="263.0" prefHeight="200.0" prefWidth="355.0" styleClass="text-area" stylesheets="@../css/estilos.css" />
-      <Label layoutX="88.0" layoutY="277.0" prefHeight="41.0" prefWidth="248.0" text="Descripción:" />
-      <Label layoutX="88.0" layoutY="195.0" prefHeight="29.0" prefWidth="213.0" text="Nombre de la operación: ">
+      <TextArea fx:id="txtArea_descripcion" layoutX="437.0" layoutY="263.0" prefHeight="200.0" prefWidth="355.0" styleClass="text-area" />
+      <Label layoutX="88.0" layoutY="277.0" prefHeight="41.0" prefWidth="248.0" text="Descripcion:" />
+      <Label layoutX="88.0" layoutY="195.0" prefHeight="29.0" prefWidth="213.0" text="Nombre de la operacion: ">
          <font>
             <Font size="17.0" />
-         </font></Label>
+         </font>
+      </Label>
       <Label fx:id="lbl_msgError" layoutX="423.0" layoutY="543.0" text="Label" visible="false" />
-      <TextField fx:id="txtField_nombreOp" layoutX="437.0" layoutY="182.0" prefHeight="26.0" prefWidth="355.0" styleClass="text-field" stylesheets="@../css/estilos.css" />
-      <Button fx:id="btn_guardarOp" layoutX="88.0" layoutY="504.0" mnemonicParsing="false" onAction="#ocClickNuevaOperacion" prefHeight="26.0" prefWidth="225.0" text="Guardar Operación" />
+      <TextField fx:id="txtField_nombreOp" layoutX="437.0" layoutY="182.0" prefHeight="26.0" prefWidth="355.0" styleClass="text-field" />
+      <Button fx:id="btn_guardarOp" layoutX="88.0" layoutY="504.0" mnemonicParsing="false" onAction="#ocClickNuevaOperacion" prefHeight="26.0" prefWidth="225.0" text="Guardar Operacion" />
       <Button fx:id="btn_cancelar" layoutX="555.0" layoutY="504.0" mnemonicParsing="false" onAction="#onClosedVentana" prefHeight="26.0" prefWidth="225.0" text="Cancelar" />
-      <Pane prefHeight="88.0" prefWidth="900.0" styleClass="root-pane" stylesheets="@../css/estilos.css">
+      <Pane prefHeight="88.0" prefWidth="900.0" styleClass="root-pane">
          <children>
             <ImageView fitHeight="119.0" fitWidth="181.0" layoutX="14.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../../../../../../../../../../Downloads/logo_UACM_sin_fondo.png" />
-               </image>
+                <Image url="@../../../../../../../../../../../../../../Downloads/logo_UACM_sin_fondo.png" />
             </ImageView>
-            <Label layoutX="340.0" layoutY="26.0" prefHeight="53.0" prefWidth="122.0" text="Multi Task - UACM">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
+            <Label layoutX="300.0" layoutY="15.0" prefWidth="300.0" styleClass="titulo-principal" text="Multi Task - UACM" />
+            <Label layoutX="300.0" layoutY="52.0" prefWidth="300.0" styleClass="subtitulo-principal" text="Sistema de Gestion y Control de Tareas de la UACM" />
          </children>
       </Pane>
    </children>

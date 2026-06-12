@@ -23,6 +23,7 @@ public class AcercaDeController implements Initializable{
     @FXML
     private Button btnCerrar;
     
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //datos sobre la aplicacion
@@ -36,6 +37,7 @@ public class AcercaDeController implements Initializable{
                 + "• Wendolyn Medina Chávez - Miembro | 21-003-0392\n"
                 + "• Ángel Juárez Andrade - Miembro |  22-003-0141");
         
+                
     }
     
     @FXML

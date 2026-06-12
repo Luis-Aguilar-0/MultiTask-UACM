@@ -8,15 +8,15 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="root-background" stylesheets="@../css/estilos.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.NuevaTareaController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="root-background" stylesheets="@../css/estilos.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.edu.uacm.is.slt.ds.multitask_uacm.controlador.NuevaTareaController">
    <children>
       <Label layoutX="33.0" layoutY="161.0" styleClass="label" text="Nombre de la tarea: " />
-      <Label layoutX="35.0" layoutY="227.0" styleClass="label" text="Descripción:" />
+      <Label layoutX="35.0" layoutY="227.0" styleClass="label" text="Descripcion:" />
       <Label layoutX="32.0" layoutY="287.0" styleClass="label" text="Tipo de tarea:" />
       <Label layoutX="28.0" layoutY="346.0" styleClass="label" text="Dependencias:" />
       
       <TextField fx:id="txtNombreTarea" layoutX="268.0" layoutY="162.0" prefHeight="25.0" prefWidth="234.0" styleClass="text-field" />
-<TextField fx:id="txtDescripcion" layoutX="268.0" layoutY="228.0" prefHeight="25.0" prefWidth="234.0" styleClass="text-field" />
+      <TextField fx:id="txtDescripcion" layoutX="268.0" layoutY="228.0" prefHeight="25.0" prefWidth="234.0" styleClass="text-field" />
       <TextField fx:id="txtDependencias" layoutX="268.0" layoutY="347.0" prefHeight="25.0" prefWidth="234.0" styleClass="text-field" />
       
       <Button fx:id="btnAgregarPrecondiciones" layoutX="33.0" layoutY="523.0" mnemonicParsing="false" onAction="#abrirPrecondiciones" prefHeight="41.0" prefWidth="201.0" styleClass="button" text="+ Agregar precondiciones" />
@@ -27,12 +27,11 @@
       <Pane prefHeight="94.0" prefWidth="900.0" styleClass="root-pane">
          <children>
             <Button fx:id="btnVolver" layoutX="743.0" layoutY="27.0" mnemonicParsing="false" onAction="#volver" prefHeight="41.0" prefWidth="111.0" styleClass="button" text="Volver" />
-            <Label layoutX="342.0" layoutY="26.0" styleClass="label" text="Nueva Tarea" />
             <ImageView fitHeight="74.0" fitWidth="165.0" layoutX="10.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../css/logo_UACM_sin_fondo.png" />
-               </image>
+                <Image url="@../css/logo_UACM_sin_fondo.png" />
             </ImageView>
+            <Label layoutX="300.0" layoutY="15.0" prefWidth="300.0" styleClass="titulo-principal" text="Nueva Tarea" />
+            <Label layoutX="300.0" layoutY="55.0" prefWidth="300.0" styleClass="subtitulo-principal" text="Sistema de Gestion y Control de Tareas de la UACM" />
          </children>
       </Pane>
       <ComboBox fx:id="comboTipoTarea" layoutX="268.0" layoutY="288.0" prefHeight="25.0" prefWidth="234.0" />
