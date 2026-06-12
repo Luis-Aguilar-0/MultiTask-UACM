@@ -17,7 +17,6 @@ public class Tarea implements Ejecutable, Runnable {
     private List<String> dependencias;
     private boolean pausable;
 
-    // --- NUEVAS PROPIEDADES PARA ROBUSTECER EL CONTROL GRÁFICO Y HILOS ---
     private double progreso;
     private Thread hilo;
     private volatile boolean corriendo;
@@ -54,9 +53,12 @@ public class Tarea implements Ejecutable, Runnable {
         this.progreso = 0.0;
     }
 
-
     public double getProgreso() {
         return progreso;
+    }
+
+    public void setProgreso(double progreso) {
+        this.progreso = progreso;
     }
 
     public String getNombre() {
@@ -94,7 +96,6 @@ public class Tarea implements Ejecutable, Runnable {
     public String getEstado() {
         return estado;
     }
-
 
     public void setEstado(String estado) {
         Platform.runLater(() -> this.estado = estado);
@@ -150,7 +151,6 @@ public class Tarea implements Ejecutable, Runnable {
         }
     }
 
-
     public void ejecutar() {
         if (hilo != null && hilo.isAlive()) {
             return;
@@ -166,12 +166,11 @@ public class Tarea implements Ejecutable, Runnable {
     @Override
     public void run() {
         try {
-
             while (progreso < 100.0 && corriendo) {
                 synchronized (bloqueo) {
                     while (pausada && corriendo) {
                         setEstado("Pausada");
-                        bloqueo.wait(); // Suspensión real del hilo sin consumo de CPU
+                        bloqueo.wait(); 
                     }
                 }
 
@@ -179,12 +178,13 @@ public class Tarea implements Ejecutable, Runnable {
                     break;
                 }
 
+                // Ajustado a 1200 milisegundos por ciclo para que 10 pasos completen 12 segundos exactos
+                Thread.sleep(1800);
 
-                Thread.sleep(200);
-
-
-                Platform.runLater(() -> progreso += 10.0);
-                System.out.println("[" + nombre + "] Progreso: " + progreso + "%");
+                if (corriendo && !pausada) {
+                    progreso += 10.0;
+                    System.out.println("[" + nombre + "] Progreso: " + progreso + "%");
+                }
             }
 
             if (corriendo && progreso >= 100.0) {
@@ -194,6 +194,17 @@ public class Tarea implements Ejecutable, Runnable {
             Thread.currentThread().interrupt();
         } finally {
             corriendo = false;
+            synchronized (bloqueo) {
+                bloqueo.notifyAll(); 
+            }
+        }
+    }
+
+    public void esperandoTermino() throws InterruptedException {
+        synchronized (bloqueo) {
+            while (corriendo && progreso < 100.0) {
+                bloqueo.wait(); 
+            }
         }
     }
 
@@ -214,7 +225,7 @@ public class Tarea implements Ejecutable, Runnable {
         synchronized (bloqueo) {
             pausada = false;
             setEstado("En ejecución");
-            bloqueo.notifyAll(); // Despierta el hilo secundario
+            bloqueo.notifyAll(); 
         }
         System.out.println("[" + nombre + "] Reanudada.");
     }
@@ -227,9 +238,9 @@ public class Tarea implements Ejecutable, Runnable {
             bloqueo.notifyAll();
         }
         if (hilo != null) {
-            hilo.interrupt(); // Interrumpe inmediatamente si el hilo estaba en sleep()
+            hilo.interrupt(); 
         }
-        Platform.runLater(() -> progreso = 0.0); // Reseteo completo conforme a la ERS
+        progreso = 0.0; 
         setEstado("Detenida");
         hilo = null;
     }

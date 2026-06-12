@@ -3,13 +3,13 @@ package mx.edu.uacm.is.slt.ds.multitask_uacm.controlador;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.Estado;
+import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.GestorOperaciones;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.Operacion;
 import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.Tarea;
 
@@ -18,248 +18,96 @@ public class VisorEditorOperacionController {
     private Operacion operacionActual;
     private static Operacion operacionPuente;
 
-
-    @FXML private TableView<Tarea> tablaTareasInternas;
-    @FXML private TableColumn<Tarea, String> colNombre;
-    @FXML private TableColumn<Tarea, String> colTipoDesc;
-    @FXML private TableColumn<Tarea, String> colEstado;
-    @FXML private TableColumn<Tarea, Double> colProgreso;
-
-
     @FXML private TextField txtNombreOperacionEdicion;
     @FXML private ComboBox<String> comboEstadoOperacion;
     @FXML private ListView<Tarea> listaTareasEdicion;
 
-    /**
-     * Guarda la referencia de la operación seleccionada en la Pantalla Principal
-     * antes de levantar la escena (Patrón de paso de parámetros).
-     */
+    // Metodo estatico para transferir la operacion seleccionada entre pantallas
     public static void guardarReferenciaOperacion(Operacion operacion) {
         operacionPuente = operacion;
     }
 
+    // Llena los combos y los datos del modelo al arrancar la vista
     @FXML
     public void initialize() {
-
-        if (colNombre != null) {
-            colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-            colTipoDesc.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
-            colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
-            colProgreso.setCellValueFactory(new PropertyValueFactory<>("progreso"));
-        }
-
-
-        if (comboEstadoOperacion != null) {
-            comboEstadoOperacion.getItems().clear();
-            comboEstadoOperacion.getItems().addAll("NO_EJECUTADA", "EN_EJECUCION", "PAUSADA", "DETENIDA", "FINALIZADA");
-        }
-
+        comboEstadoOperacion.getItems().setAll(
+            Estado.NO_EJECUTADA.name(),
+            Estado.EN_EJECUCION.name(),
+            Estado.PAUSADO.name(),
+            Estado.DETENIDA.name(),
+            Estado.FINALIZADA.name()
+        );
 
         if (operacionPuente != null) {
             this.operacionActual = operacionPuente;
             mostrarDatos();
         }
-        
-
-        Thread refrescadorGrafico = new Thread(() -> {
-            try {
-                while (operacionActual != null) {
-                    Thread.sleep(300);
-                    javafx.application.Platform.runLater(() -> {
-                        if (tablaTareasInternas != null) {
-                            tablaTareasInternas.refresh();
-                        }
-                    });
-                }
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        });
-        refrescadorGrafico.setDaemon(true);
-        refrescadorGrafico.start();
     }
 
-    /**
-     * Valida la existencia segura del modelo en memoria.
-     */
-    private boolean isNulOperacion() {
-        return operacionActual != null;
+    // Pinta la informacion del modelo en los controles de JavaFX
+    private void mostrarDatos() {
+        if (operacionActual == null) return;
+        txtNombreOperacionEdicion.setText(operacionActual.getNombre());
+        Estado e = operacionActual.getEstado();
+        comboEstadoOperacion.setValue(e != null ? e.name() : Estado.NO_EJECUTADA.name());
+        ObservableList<Tarea> lista = FXCollections.observableArrayList(operacionActual.getTareas());
+        listaTareasEdicion.setItems(lista);
     }
 
-    /**
-     * Recupera externamente la operación si la arquitectura lo solicita.
-     */
     public void setOperacionActual(Operacion operacion) {
         this.operacionActual = operacion;
         mostrarDatos();
     }
 
-    /**
-     * Carga y distribuye los datos en los componentes visuales dependiendo de la pantalla abierta.
-     */
-    @FXML
-    public void mostrarDatos() {
-        if (!isNulOperacion()) return;
-        
-        // Carga para la ventana de ejecución de procesos
-        if (tablaTareasInternas != null) {
-            ObservableList<Tarea> listaTareasObservables = FXCollections.observableArrayList(operacionActual.getTareas());
-            tablaTareasInternas.setItems(listaTareasObservables);
-        }
-        
-        // Carga para la ventana de edición y diseño
-        if (txtNombreOperacionEdicion != null) {
-            txtNombreOperacionEdicion.setText(operacionActual.getNombre());
-            
-            if (operacionActual.getEstado() != null) {
-                comboEstadoOperacion.setValue(operacionActual.getEstado().toString());
-            } else {
-                comboEstadoOperacion.getSelectionModel().selectFirst();
-            }
-            
-            if (listaTareasEdicion != null && operacionActual.getTareas() != null) {
-                ObservableList<Tarea> tareasEdicion = FXCollections.observableArrayList(operacionActual.getTareas());
-                listaTareasEdicion.setItems(tareasEdicion);
-            }
-        }
-    }
-
-    /**
-     * Guarda los cambios del Editor en el objeto del Modelo (CU-04).
-     */
+    // Valida y guarda las modificaciones de la operacion de regreso en la lista global
     @FXML
     public void guardar() {
-        if (!isNulOperacion()) return;
-        
-        try {
-            if (txtNombreOperacionEdicion != null) {
-                String nuevoNombre = txtNombreOperacionEdicion.getText().trim();
-                if (nuevoNombre.isEmpty()) {
-                    System.out.println("El nombre de la operación no puede estar vacío.");
-                    return;
-                }
-                
-                // Traspaso de datos bajo patrón MVC
-                operacionActual.setNombre(nuevoNombre);
-                
-                if (comboEstadoOperacion.getValue() != null) {
-                    String estadoStr = comboEstadoOperacion.getValue().toUpperCase().trim();
-                    operacionActual.setEstado(mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.Estado.valueOf(estadoStr));
-                }
-                
-                System.out.println("Operación guardada en el Gestor de forma reactiva: " + operacionActual.getNombre());
-                descartar(); // Cierre automático de ventana
-            }
-        } catch (IllegalArgumentException e) {
-            System.err.println("Error de conversión en el Enum de Estado: " + e.getMessage());
+        if (operacionActual == null) return;
+
+        String nombre = txtNombreOperacionEdicion.getText().trim();
+        if (nombre.isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "El nombre no puede estar vacio.").showAndWait();
+            return;
         }
+
+        operacionActual.setNombre(nombre);
+        String estadoStr = comboEstadoOperacion.getValue();
+        if (estadoStr != null) {
+            try {
+                operacionActual.setEstado(Estado.valueOf(estadoStr));
+            } catch (IllegalArgumentException ex) {
+                System.err.println("Estado invalido: " + estadoStr);
+            }
+        }
+
+        // Buscamos el indice de la operacion vieja para reemplazarla con la nueva reactivamente
+        int indice = GestorOperaciones.obtenerInstancia().getOperaciones().indexOf(operacionActual);
+        if (indice >= 0) {
+            GestorOperaciones.obtenerInstancia().getOperaciones().set(indice, operacionActual);
+        }
+
+        new Alert(Alert.AlertType.INFORMATION, "Datos guardados correctamente.").showAndWait();
+        descartar();
     }
 
-    /**
-     * Cierra la ventana activa regresando fluidamente a la pantalla principal.
-     */
+    // Cierra el cuadro flotante
     @FXML
     public void descartar() {
-        Stage stage = null;
         if (txtNombreOperacionEdicion != null && txtNombreOperacionEdicion.getScene() != null) {
-            stage = (Stage) txtNombreOperacionEdicion.getScene().getWindow();
-        } else if (tablaTareasInternas != null && tablaTareasInternas.getScene() != null) {
-            stage = (Stage) tablaTareasInternas.getScene().getWindow();
-        }
-        
-        if (stage != null) {
-            stage.close();
+            ((Stage) txtNombreOperacionEdicion.getScene().getWindow()).close();
         }
     }
 
-    // ─── COMPORTAMIENTOS CONCURRENTES (Fieles a Interfaz Ejecutable) ─────────
-    @FXML
-    public void pausar() {
-        if (isNulOperacion()) {
-            operacionActual.pausar();
-            if (tablaTareasInternas != null) tablaTareasInternas.refresh();
-        }
-    }
-
-    @FXML
-    public void reanudar() {
-        if (isNulOperacion()) {
-            operacionActual.reanudar();
-            if (tablaTareasInternas != null) tablaTareasInternas.refresh();
-        }
-    }
-
-    @FXML
-    public void detener() {
-        if (isNulOperacion()) {
-            operacionActual.detener();
-            if (tablaTareasInternas != null) tablaTareasInternas.refresh();
-        }
-    }
-
-    // ─── CONTROL DE ASOCIACIÓN Y ORDEN DE TAREAS (Casos de Uso ERS) ──────────
-    @FXML
-    public void asociarNuevaTareaAOperacion() {
-        if (!isNulOperacion()) return;
-        
-        // Inyecta una tarea en el flujo de la operación (CU-04)
-        Tarea nuevaTarea = new Tarea("Nueva Tarea Pasos", "Descripción por definir");
-        operacionActual.agregarTarea(nuevaTarea);
-        
-        mostrarDatos(); // Refresco reactivo instantáneo
-        System.out.println("Nueva tarea asociada al proceso actual.");
-    }
-
-    @FXML
-    public void moverTareaArribaEdicion() {
-        if (listaTareasEdicion == null) return;
-        int indice = listaTareasEdicion.getSelectionModel().getSelectedIndex();
-        if (indice > 0 && isNulOperacion()) {
-            operacionActual.moverTareaArriba(indice);
-            mostrarDatos();
-            listaTareasEdicion.getSelectionModel().select(indice - 1);
-        }
-    }
-
-    @FXML
-    public void moverTareaAbajoEdicion() {
-        if (listaTareasEdicion == null) return;
-        int indice = listaTareasEdicion.getSelectionModel().getSelectedIndex();
-        if (isNulOperacion() && indice >= 0 && indice < operacionActual.getTareas().size() - 1) {
-            operacionActual.moverTareaAbajo(indice);
-            mostrarDatos();
-            listaTareasEdicion.getSelectionModel().select(indice + 1);
-        }
-    }
-
-    @FXML
-    public void agregarNuevaTarea() {
-        if (!isNulOperacion()) return;
-        
-        // Flujo alterno (CU-01): Levantar formulario NuevaTarea.fxml
-        try {
-            javafx.fxml.FXMLLoader cargador = new javafx.fxml.FXMLLoader(
-                getClass().getResource("/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/NuevaTarea.fxml")
-            );
-            javafx.scene.Parent raiz = cargador.load();
-            
-            Stage escenarioFlotante = new Stage();
-            escenarioFlotante.setTitle("Crear Nueva Tarea - MultiTask-UACM");
-            escenarioFlotante.initModality(javafx.stage.Modality.WINDOW_MODAL);
-            escenarioFlotante.initOwner(tablaTareasInternas.getScene().getWindow());
-            escenarioFlotante.setScene(new javafx.scene.Scene(raiz));
-            escenarioFlotante.showAndWait();
-            
-            mostrarDatos();
-            
-        } catch (java.io.IOException e) {
-            System.err.println("Error al abrir ventana interactiva de tareas: " + e.getMessage());
-        }
-    }
-    
-    // Métodos estructurales vacíos solicitados por el modelo de diseño viejo
+    // Metodos complementarios de la interfaz
     public void abrirVisor() {}
     public void modificarNombre(String nombre) {}
     public void modificarTareas() {}
     public void modificarOrden() {}
+    public void pausar() {}
+    public void reanudar() {}
+    public void detener() {}
+    public void moverTareaArribaEdicion() {}
+    public void moverTareaAbajoEdicion() {}
+    public void eliminarTareaSeleccionada() {}
+    public void agregarNuevaTarea() {}
 }

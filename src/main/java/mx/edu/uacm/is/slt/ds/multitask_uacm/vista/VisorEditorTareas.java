@@ -12,33 +12,39 @@ public class VisorEditorTareas {
     private Stage stage;
     private static VisorEditorTareas singleton;
 
-    private VisorEditorTareas() {}
+    // Constructor privado para que nadie use el operador new fuera de aqui
+    private VisorEditorTareas() {
+    }
 
+    // Reutiliza la ventana si ya existe o crea una nueva desde cero
     public static VisorEditorTareas obtenerInstancia(Stage pantalla, Operacion operacion) {
         if (singleton == null) {
             singleton = new VisorEditorTareas();
             singleton.stage = pantalla;
             singleton.cargarVista(operacion);
 
-            // Agregamos el listener para destruir el singleton cuando el usuario cierre la ventana
+            // Si el usuario cierra la ventana, liberamos la instancia para el recolector de basura
             singleton.stage.showingProperty().addListener((observable, oldValue, newValue) -> {
                 if (!newValue) {
                     singleton = null;
                 }
             });
         } else {
-            // Si la ventana ya está abierta, evitamos crear una nueva y la traemos al frente
+            // Si ya estaba abierta, solo actualiza los datos y la manda al frente
+            singleton.cargarVista(operacion);
             singleton.stage.toFront();
         }
         return singleton;
     }
 
+    // Despliega la ventana en la interfaz grafica
     public void mostrar() {
         if (stage != null) {
             stage.show();
         }
     }
 
+    // Carga el archivo de diseño FXML y le inyecta el controlador correspondiente
     private void cargarVista(Operacion operacion) {
         try {
             String rutaFXML = "/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/VisorDeTareas.fxml";
@@ -52,9 +58,9 @@ public class VisorEditorTareas {
 
             Parent vistaRaiz = fxmlLoader.load();
 
-
+            // Pasamos los datos de la operacion al controlador de la pantalla
             VisorDeTareasController controlador = fxmlLoader.getController();
-            if (operacion != null) {
+            if (operacion != null && controlador != null) {
                 controlador.setOperacion(operacion);
             }
 

@@ -10,16 +10,11 @@ import mx.edu.uacm.is.slt.ds.multitask_uacm.modelo.Tarea;
 
 public class EditorTareasController {
 
-    @FXML
-    private TextField txtNombre;
-    @FXML
-    private TextField txtDescripcion;
-    @FXML
-    private ComboBox<String> comboTipo;
-    @FXML
-    private TextArea txtComportamiento;
-    @FXML
-    private CheckBox chkPausable;
+    @FXML private TextField txtNombre;
+    @FXML private TextField txtDescripcion;
+    @FXML private ComboBox<String> comboTipo;
+    @FXML private TextArea txtComportamiento;
+    @FXML private CheckBox chkPausable;
 
     private Tarea tarea;
 
@@ -51,7 +46,6 @@ public class EditorTareasController {
             return;
         }
 
-        // Mapeo directo de la Vista al Modelo (MVC Puro)
         tarea.setNombre(txtNombre.getText().trim());
         tarea.setDescripcion(txtDescripcion.getText().trim());
         tarea.setComportamiento(txtComportamiento.getText().trim());
@@ -60,7 +54,6 @@ public class EditorTareasController {
 
         System.out.println("Cambios guardados en el Modelo para: " + tarea.getNombre());
 
-        // Cierra la ventana flotante de edición de forma elegante
         Stage stage = (Stage) txtNombre.getScene().getWindow();
         stage.close();
     }
@@ -75,27 +68,27 @@ public class EditorTareasController {
     public void ejecutarTarea() {
         if (tarea != null) {
             tarea.ejecutar();
-    
-        }}
+        }
+    }
 
     @FXML
     public void pausarTarea() {
         if (tarea != null) {
             tarea.pausar();
-    
-        }}
+        }
+    }
 
     @FXML
     public void reanudarTarea() {
         if (tarea != null) {
             tarea.reanudar();
-    
-        }}
+        }
+    }
 
     @FXML
     public void detenerTarea() {
         if (tarea != null) {
             tarea.detener();
-    
-        }}
+        }
+    }
 }

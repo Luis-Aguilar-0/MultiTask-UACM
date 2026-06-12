@@ -1,16 +1,17 @@
+/* CONTROL DE CONTENEDORES */
 .root-pane {
-    -fx-background-color: #D9CCC5;
+    -fx-background-color: #D9CCC5; /* Fondo del contenedor base */
 }
 
 .root-background {
-    -fx-background-color: #F2EDE6;
-
+    -fx-background-color: #F2EDE6; /* Fondo secundario de la escena */
 }
 
+/* COMPONENTES DE TEXTO Y ENTRADAS */
 .label {
     -fx-font-family: "Arial";
     -fx-font-size: 14px;
-    -fx-text-fill: #333333;
+    -fx-text-fill: #333333; /* Color de fuente por defecto */
 }
 
 .text-field, .text-area {
@@ -26,18 +27,81 @@
     -fx-font-size: 13px;
 }
 
+/* BOTONES GENERALES INTERFAZ */
 .button {
     -fx-background-color: #C3A495;
     -fx-font-family: "Arial Black";
     -fx-font-size: 13px;
     -fx-text-fill: white;
     -fx-cursor: hand;
+    -fx-background-radius: 8; /* Redondeo de esquinas */
 }
 
 .button:hover {
-    -fx-background-color: #B39282;
+    -fx-background-color: #B39282; /* Cambio de tono al pasar cursor */
 }
 
 .button:pressed {
-    -fx-background-color: #A38170;
+    -fx-background-color: #A38170; /* Cambio de tono al presionar click */
+}
+
+/* COMPONENTES TABLEVIEW (REJILLA PRINCIPAL) */
+.table-view.tabla-principal {
+    -fx-background-color: #f7f1eb;
+    -fx-background-insets: 0;
+    -fx-border-color: #d8c5ba;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.table-view.tabla-principal .column-header-background {
+    -fx-background-color: linear-gradient(to bottom, #d9ccc5, #cbb5aa); /* Degradado del encabezado */
+    -fx-background-radius: 10 10 0 0;
+}
+
+.table-view.tabla-principal .column-header,
+.table-view.tabla-principal .filler {
+    -fx-size: 42px;
+    -fx-border-color: transparent transparent #bfa99e transparent;
+}
+
+.table-view.tabla-principal .column-header .label {
+    -fx-text-fill: #4b3b36;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+/* FILAS Y CELDAS DE LA TABLA */
+.table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent #eadfd8 transparent;
+}
+
+.table-row-cell:filled:selected,
+.table-row-cell:filled:selected:hover {
+    -fx-background-color: #e6d3c8; /* Color al seleccionar registro */
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #fcf8f5; /* Alternancia de color en filas impares */
+}
+
+.table-cell {
+    -fx-padding: 10 8 10 8;
+    -fx-font-size: 12px;
+    -fx-text-fill: #3f302b;
+}
+
+/* COMPONENTES INYECTADOS DESDE CONTROLADOR JAVA */
+.boton-estado-celda {
+    -fx-background-color: #C3A495;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-opacity: 1.0;
+}
+
+.contenedor-acciones-celda {
+    -fx-alignment: center;
+    -fx-spacing: 6; /* Espaciado horizontal entre elementos de la celda */
 }

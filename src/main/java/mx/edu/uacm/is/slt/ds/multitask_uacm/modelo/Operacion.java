@@ -1,9 +1,9 @@
 package mx.edu.uacm.is.slt.ds.multitask_uacm.modelo;
 
-import javafx.application.Platform;
+import java.util.List;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import java.util.List;
 
 public class Operacion implements Ejecutable, Runnable {
     private String nombre;
@@ -11,12 +11,10 @@ public class Operacion implements Ejecutable, Runnable {
     private ObservableList<Tarea> tareas;
     private Estado estado;
 
-    //Atributos para el manejo de hilos
     private Thread hiloPrincipal;
     private volatile boolean corriendo;
     private volatile boolean pausada;
     private final Object bloqueo = new Object();
-
 
     public Operacion() {
         this.nombre = "Nueva operación";
@@ -47,8 +45,7 @@ public class Operacion implements Ejecutable, Runnable {
     public Estado getEstado() { return estado; }
 
     public void setEstado(Estado estado) {
-        // actualizamos el estado del hilo de javaFX para evitar que se conjele la intrefaz garfica
-        Platform.runLater(() -> this.estado = estado);
+        this.estado = estado;
     }
 
     public void agregarTarea(Tarea tarea) {
@@ -76,91 +73,82 @@ public class Operacion implements Ejecutable, Runnable {
     }
 
     public void ejecutar() {
-        //chacamos si ya esta corriedo y no es null
-        if(hiloPrincipal != null && hiloPrincipal.isAlive()) {
-            return; // evita que se ejecute dos veces
+        if (hiloPrincipal != null && hiloPrincipal.isAlive()) {
+            return;
         }
         corriendo = true;
         pausada = false;
         setEstado(Estado.EN_EJECUCION);
-
-        //se crea el hilo
         hiloPrincipal = new Thread(this, "Orquestador-" + nombre);
         hiloPrincipal.setDaemon(true);
         hiloPrincipal.start();
-
     }
-
 
     @Override
     public void run() {
-
         try {
-            for(Tarea tareaActual: tareas) {
-                //chacamos si la operacion esta pausada
-                synchronized(bloqueo) {
-                    while (pausada && corriendo){
+            for (Tarea tareaActual : tareas) {
+                synchronized (bloqueo) {
+                    while (pausada && corriendo) {
                         setEstado(Estado.PAUSADO);
                         bloqueo.wait();
                     }
                 }
 
-                //si se detuvo la operacion salimos del ciclo
-                if(!corriendo){
+                if (!corriendo) {
                     break;
                 }
 
                 setEstado(Estado.EN_EJECUCION);
-
-                //se ejecuta la tarea actual
                 tareaActual.ejecutar();
 
-                //esperamos a que termine para continual con la siguiente tarea
-                while (tareaActual.getProgreso() < 100.0 && corriendo){
-                    Thread.sleep(300);
+                // Ciclo sychronized encargado de retener la operacion hasta que el progreso de la tarea alcance el cien por ciento
+                while (tareaActual.getProgreso() < 100.0 && corriendo) {
+                    synchronized (bloqueo) {
+                        while (pausada && corriendo) {
+                            setEstado(Estado.PAUSADO);
+                            bloqueo.wait(); // Duerme el orquestador si el usuario presiona el boton de pausa en la interfaz
+                        }
+                    }
+                    Thread.sleep(200); // Pequeño retardo de sondeo asincrono para no saturar el procesador
                 }
             }
 
-            //si la opearcion no fue detenida
-            if(corriendo){
+            if (corriendo) {
                 setEstado(Estado.FINALIZADA);
                 System.out.println("Operacion " + nombre + " termino todas sus tareas");
             }
-        }catch(InterruptedException e){
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-        }finally {
+        } finally {
             corriendo = false;
         }
-
     }
 
     @Override
     public void pausar() {
-        if(!corriendo){
-           return;
+        if (!corriendo) {
+            return;
         }
         pausada = true;
-
         for (Tarea tarea : tareas) tarea.pausar();
+        setEstado(Estado.PAUSADO);
     }
 
     @Override
     public void reanudar() {
-
-        if(!pausada){
-           return;
+        if (!pausada) {
+            return;
         }
-        for(Tarea tareaActual: tareas){
+        for (Tarea tareaActual : tareas) {
             tareaActual.reanudar();
         }
 
-        synchronized(bloqueo) {
+        synchronized (bloqueo) {
             pausada = false;
             setEstado(Estado.EN_EJECUCION);
             bloqueo.notifyAll();
         }
-
-
     }
 
     @Override
@@ -168,24 +156,25 @@ public class Operacion implements Ejecutable, Runnable {
         corriendo = false;
         pausada = false;
 
-        for(Tarea tareaActual: tareas){
+        for (Tarea tareaActual : tareas) {
             tareaActual.detener();
+            tareaActual.setProgreso(0.0); 
         }
 
-        // libera el hilo
-        synchronized(bloqueo) {
+        synchronized (bloqueo) {
             bloqueo.notifyAll();
         }
-        if(hiloPrincipal != null ) {
+
+        if (hiloPrincipal != null) {
             hiloPrincipal.interrupt();
         }
+
         setEstado(Estado.DETENIDA);
         hiloPrincipal = null;
-
-
     }
 
     @Override
-    public String toString() { return nombre; }
-
+    public String toString() {
+        return nombre;
+    }
 }
