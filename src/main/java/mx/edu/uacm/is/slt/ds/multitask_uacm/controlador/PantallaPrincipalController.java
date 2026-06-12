@@ -159,6 +159,22 @@ public class PantallaPrincipalController {
         ObservableList<Operacion> operaciones = (ObservableList<Operacion>) gestor.getOperaciones();
         operaciones.addListener((ListChangeListener<Operacion>) c -> tlbV_tablaViewPrincipal.refresh());
         tlbV_tablaViewPrincipal.setItems(operaciones);
+
+        Thread hiloRefrescadorPrincipal = new Thread(() -> {
+            try {
+                while (true) {
+                    // Actualiza la tabla principal cada medio segundo
+                    Thread.sleep(500);
+                    javafx.application.Platform.runLater(() -> {
+                        tlbV_tablaViewPrincipal.refresh();
+                    });
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+        hiloRefrescadorPrincipal.setDaemon(true); // Se cierra al salir de la app
+        hiloRefrescadorPrincipal.start();
     }
 
     // Abre la ventana de edicion para la operacion seleccionada

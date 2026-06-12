@@ -156,44 +156,16 @@ public class VisorDeTareasController implements Initializable {
 
         // Creamos los botones de acciones de la tabla usando estilos css limpios
         tlb_acciones.setCellFactory(param -> new TableCell<Tarea, String>() {
-            private final Button btnEditar = new Button("Editar");
+            //private final Button btnEditar = new Button("Editar");
             private final Button btnEliminar = new Button("Eliminar");
             private final HBox contenedor = new HBox();
 
             {
                 contenedor.getStyleClass().add("contenedor-acciones-celda");
-                btnEditar.getStyleClass().add("button");
+               // btnEditar.getStyleClass().add("button");
                 btnEliminar.getStyleClass().add("button");
 
-                // Evento para el boton de editar la tarea seleccionada
-                btnEditar.setOnAction(event -> {
-                    if (operacionActual.getEstado() == Estado.EN_EJECUCION || operacionActual.getEstado() == Estado.PAUSADO) {
-                        mostrarAlerta("No se puede editar", "La operacion esta corriendo o pausada. Detenla para modificar tareas.");
-                        return;
-                    }
-                    if (operacionActual.getEstado() == Estado.FINALIZADA) {
-                        mostrarAlerta("Operacion terminada", "Esta operacion ya finalizo exitosamente y no se puede modificar.");
-                        return;
-                    }
 
-                    Tarea t = getTableView().getItems().get(getIndex());
-                    System.out.println("Consola: Editando tarea -> " + t.getNombre());
-
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/edu/uacm/is/slt/ds/multitask_uacm/fxml/NuevaTarea.fxml"));
-                        Parent root = loader.load();
-                        NuevaTareaController edicionControlador = loader.getController();
-                        edicionControlador.setOperacion(operacionActual);
-
-                        Stage stageEdicionFlotante = new Stage();
-                        stageEdicionFlotante.setScene(new Scene(root));
-                        stageEdicionFlotante.setTitle("Editar Tarea - " + t.getNombre());
-                        stageEdicionFlotante.setOnHidden(e -> tableView.refresh());
-                        stageEdicionFlotante.show();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                });
 
                 // Evento para eliminar la tarea de la lista
                 btnEliminar.setOnAction(event -> {
@@ -209,7 +181,7 @@ public class VisorDeTareasController implements Initializable {
                     operacionActual.getTareas().remove(t);
                     tableView.refresh();
                 });
-                contenedor.getChildren().addAll(btnEditar, btnEliminar);
+                contenedor.getChildren().addAll(btnEliminar);
             }
 
             @Override
